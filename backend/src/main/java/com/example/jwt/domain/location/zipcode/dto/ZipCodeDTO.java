@@ -1,23 +1,30 @@
-package com.example.jwt.domain.location.dto;
+package com.example.jwt.domain.location.zipcode.dto;
 
 import com.example.jwt.core.generic.ExtendedDTO;
+import com.example.jwt.domain.location.place.Place;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.UUID;
 
 public class ZipCodeDTO extends ExtendedDTO {
 
     @NotNull
-    @Size(min = 1000, max = 9999)
+    @Min(1000)
+    @Max(9658)
     private int zipCode;
 
-    @NotNull
-    private String place;
+    @Valid
+    private Place place;
 
-    public ZipCodeDTO(UUID id, int zipcode, String place) {
+    public ZipCodeDTO() {
+    }
+
+    public ZipCodeDTO(UUID id, int zipCode, Place place) {
         super(id);
-        this.zipCode = zipcode;
+        this.zipCode = zipCode;
         this.place = place;
     }
 
@@ -30,11 +37,11 @@ public class ZipCodeDTO extends ExtendedDTO {
         return this;
     }
 
-    public String getPlace() {
+    public Place getPlace() {
         return place;
     }
 
-    public ZipCodeDTO setPlace(String place) {
+    public ZipCodeDTO setPlace(Place place) {
         this.place = place;
         return this;
     }

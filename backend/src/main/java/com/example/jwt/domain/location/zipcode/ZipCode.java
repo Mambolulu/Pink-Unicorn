@@ -1,36 +1,28 @@
-package com.example.jwt.domain.location;
+package com.example.jwt.domain.location.zipcode;
 
 import com.example.jwt.core.generic.ExtendedEntity;
+import com.example.jwt.domain.location.place.Place;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
+@Table(name = "zip_code")
 public class ZipCode extends ExtendedEntity {
-
-@Column(name = "place", nullable = false)
-    private String place;
 
     @Column(name = "zip_code", nullable = false, unique = true)
     private int zipCode;
 
+    @ManyToOne
+    @JoinColumn(name = "place", referencedColumnName = "id")
+    private Place place;
     public ZipCode() {
     }
 
-    public ZipCode(UUID id, String place, int zipCode) {
+    public ZipCode(UUID id, int zipCode, Place place) {
         super(id);
-        this.place = place;
         this.zipCode = zipCode;
-    }
-
-    public String getPlace() {
-        return place;
-    }
-
-    public ZipCode setPlace(String place) {
         this.place = place;
-        return this;
     }
 
     public int getZipCode() {
@@ -39,6 +31,15 @@ public class ZipCode extends ExtendedEntity {
 
     public ZipCode setZipCode(int zipCode) {
         this.zipCode = zipCode;
+        return this;
+    }
+
+    public Place getPlace() {
+        return place;
+    }
+
+    public ZipCode setPlace(Place place) {
+        this.place = place;
         return this;
     }
 }
