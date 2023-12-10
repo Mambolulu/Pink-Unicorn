@@ -1,17 +1,16 @@
-package com.example.jwt.domain.location.dto;
+package com.example.jwt.domain.location.zipcode.dto;
 
-import com.example.jwt.domain.location.ZipCode;
+import com.example.jwt.domain.location.zipcode.ZipCode;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-12-09T15:24:49+0100",
+    date = "2023-12-10T15:55:18+0100",
     comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-7.5.jar, environment: Java 17.0.5 (Eclipse Adoptium)"
 )
 @Component
@@ -26,8 +25,8 @@ public class ZipCodeMapperImpl implements ZipCodeMapper {
         ZipCode zipCode = new ZipCode();
 
         zipCode.setId( dto.getId() );
-        zipCode.setPlace( dto.getPlace() );
         zipCode.setZipCode( dto.getZipCode() );
+        zipCode.setPlace( dto.getPlace() );
 
         return zipCode;
     }
@@ -66,17 +65,11 @@ public class ZipCodeMapperImpl implements ZipCodeMapper {
             return null;
         }
 
-        UUID id = null;
-        String place = null;
+        ZipCodeDTO zipCodeDTO = new ZipCodeDTO();
 
-        id = BO.getId();
-        place = BO.getPlace();
-
-        int zipcode = 0;
-
-        ZipCodeDTO zipCodeDTO = new ZipCodeDTO( id, zipcode, place );
-
+        zipCodeDTO.setId( BO.getId() );
         zipCodeDTO.setZipCode( BO.getZipCode() );
+        zipCodeDTO.setPlace( BO.getPlace() );
 
         return zipCodeDTO;
     }

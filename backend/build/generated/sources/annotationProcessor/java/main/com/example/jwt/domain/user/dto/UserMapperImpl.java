@@ -2,6 +2,10 @@ package com.example.jwt.domain.user.dto;
 
 import com.example.jwt.domain.authority.Authority;
 import com.example.jwt.domain.authority.dto.AuthorityDTO;
+import com.example.jwt.domain.location.zipcode.ZipCode;
+import com.example.jwt.domain.location.zipcode.dto.ZipCodeDTO;
+import com.example.jwt.domain.rank.Rank;
+import com.example.jwt.domain.rank.dto.RankDTO;
 import com.example.jwt.domain.role.Role;
 import com.example.jwt.domain.role.dto.RoleDTO;
 import com.example.jwt.domain.user.User;
@@ -14,7 +18,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-12-09T15:52:53+0100",
+    date = "2023-12-10T15:55:18+0100",
     comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-7.5.jar, environment: Java 17.0.5 (Eclipse Adoptium)"
 )
 @Component
@@ -31,6 +35,10 @@ public class UserMapperImpl implements UserMapper {
         user.setId( dto.getId() );
         user.setFirstName( dto.getFirstName() );
         user.setLastName( dto.getLastName() );
+        user.setBirthDate( dto.getBirthDate() );
+        user.setAddress( dto.getAddress() );
+        user.setZipCode( zipCodeDTOToZipCode( dto.getZipCode() ) );
+        user.setRank( rankDTOToRank( dto.getRank() ) );
         user.setEmail( dto.getEmail() );
         user.setRoles( roleDTOSetToRoleSet( dto.getRoles() ) );
 
@@ -76,6 +84,10 @@ public class UserMapperImpl implements UserMapper {
         userDTO.setId( BO.getId() );
         userDTO.setFirstName( BO.getFirstName() );
         userDTO.setLastName( BO.getLastName() );
+        userDTO.setBirthDate( BO.getBirthDate() );
+        userDTO.setAddress( BO.getAddress() );
+        userDTO.setZipCode( zipCodeToZipCodeDTO( BO.getZipCode() ) );
+        userDTO.setRank( rankToRankDTO( BO.getRank() ) );
         userDTO.setEmail( BO.getEmail() );
         userDTO.setRoles( roleSetToRoleDTOSet( BO.getRoles() ) );
 
@@ -125,6 +137,35 @@ public class UserMapperImpl implements UserMapper {
         user.setPassword( dto.getPassword() );
 
         return user;
+    }
+
+    protected ZipCode zipCodeDTOToZipCode(ZipCodeDTO zipCodeDTO) {
+        if ( zipCodeDTO == null ) {
+            return null;
+        }
+
+        ZipCode zipCode = new ZipCode();
+
+        zipCode.setId( zipCodeDTO.getId() );
+        zipCode.setZipCode( zipCodeDTO.getZipCode() );
+        zipCode.setPlace( zipCodeDTO.getPlace() );
+
+        return zipCode;
+    }
+
+    protected Rank rankDTOToRank(RankDTO rankDTO) {
+        if ( rankDTO == null ) {
+            return null;
+        }
+
+        Rank rank = new Rank();
+
+        rank.setId( rankDTO.getId() );
+        rank.setName( rankDTO.getName() );
+        rank.setDiscount( rankDTO.getDiscount() );
+        rank.setNeededSeeds( rankDTO.getNeededSeeds() );
+
+        return rank;
     }
 
     protected Authority authorityDTOToAuthority(AuthorityDTO authorityDTO) {
@@ -178,6 +219,35 @@ public class UserMapperImpl implements UserMapper {
         }
 
         return set1;
+    }
+
+    protected ZipCodeDTO zipCodeToZipCodeDTO(ZipCode zipCode) {
+        if ( zipCode == null ) {
+            return null;
+        }
+
+        ZipCodeDTO zipCodeDTO = new ZipCodeDTO();
+
+        zipCodeDTO.setId( zipCode.getId() );
+        zipCodeDTO.setZipCode( zipCode.getZipCode() );
+        zipCodeDTO.setPlace( zipCode.getPlace() );
+
+        return zipCodeDTO;
+    }
+
+    protected RankDTO rankToRankDTO(Rank rank) {
+        if ( rank == null ) {
+            return null;
+        }
+
+        RankDTO rankDTO = new RankDTO();
+
+        rankDTO.setId( rank.getId() );
+        rankDTO.setName( rank.getName() );
+        rankDTO.setDiscount( rank.getDiscount() );
+        rankDTO.setNeededSeeds( rank.getNeededSeeds() );
+
+        return rankDTO;
     }
 
     protected AuthorityDTO authorityToAuthorityDTO(Authority authority) {
