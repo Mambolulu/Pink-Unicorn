@@ -165,6 +165,9 @@ $RECYCLE.BIN/
 *.iws
 *.iml
 *.ipr
+# IntelliJ IDEA local workspace file
+.idea/workspace.xml
+.idea/dataSources.local.xml
 
 ### NetBeans ###
 /nbproject/private/
