@@ -1,6 +1,8 @@
 package com.example.jwt.domain.user.dto;
 
 import com.example.jwt.core.generic.ExtendedDTO;
+
+import java.time.LocalDate;
 import java.util.UUID;
 import javax.validation.constraints.Email;
 
@@ -9,6 +11,14 @@ public class UserRegisterDTO extends ExtendedDTO {
   private String firstName;
 
   private String lastName;
+
+  private LocalDate birthDate;
+
+  private String address;
+
+  private int plz;
+
+  private String rank;
 
   @Email
   private String email;
