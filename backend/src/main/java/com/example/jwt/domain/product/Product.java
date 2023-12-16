@@ -21,6 +21,8 @@ public class Product extends ExtendedEntity {
 
   private BigDecimal sellingPricePer100g;
 
+  private int stock;
+
   public UUID getId() {
     return id;
   }
@@ -62,13 +64,11 @@ public class Product extends ExtendedEntity {
     this.sellingPricePer100g = sellingPricePer100g;
   }
 
-  public LocalDate getHarvestDate() {
-    return harvestDate;
+  public int getStock() {
+    return stock;
   }
 
-  public void setHarvestDate(LocalDate harvestDate) {
-    this.harvestDate = harvestDate;
+  public void setStock(int stock) {
+    this.stock = stock;
   }
-
-  private LocalDate harvestDate;
 }

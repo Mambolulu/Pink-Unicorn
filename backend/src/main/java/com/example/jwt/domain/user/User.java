@@ -1,6 +1,7 @@
 package com.example.jwt.domain.user;
 
 import com.example.jwt.core.generic.ExtendedAuditEntity;
+import com.example.jwt.domain.authority.Authority;
 import com.example.jwt.domain.location.zipcode.ZipCode;
 import com.example.jwt.domain.rank.Rank;
 import com.example.jwt.domain.role.Role;
@@ -69,8 +70,8 @@ public class User extends ExtendedAuditEntity {
     this.email = email;
     this.password = password;
     this.roles = roles;
-    this.customerRank;
-    this.seeds;
+    this.customerRank = customerRank;
+    this.seeds = seeds;
   }
 
   public String getFirstName() {
@@ -177,23 +178,14 @@ public class User extends ExtendedAuditEntity {
     updateCustomerRank();
   }
 
-  // Methode zur Aktualisierung des Kundenranges
+  // Methode zur Aktualisierung des Kundenranges basierend auf den Seeds
   private void updateCustomerRank() {
-    if (this.seeds >= 300) {
-      this.customerRank = CustomerRank.DIAMOND;
-    } else if (this.seeds >= 140) {
-      this.customerRank = CustomerRank.PLATINUM;
-    } else if (this.seeds >= 60) {
-      this.customerRank = CustomerRank.GOLD;
-    } else if (this.seeds >= 20) {
-      this.customerRank = CustomerRank.SILVER;
-    } else if (this.seeds >= 0) {
-      this.customerRank = CustomerRank.BRONZE;
-    }
+    this.customerRank = CustomerRank.determineRank(this.seeds);
   }
 
   public boolean canPlaceOrder() {
     return this.roles.stream()
-            .anyMatch(role -> role.getAuthorities().contains(Authority.CAN_PLACE_ORDER));
+            .flatMap(role -> role.getAuthorities().stream())
+            .anyMatch(authority -> authority.getName().equals(Authority.CAN_PLACE_ORDER));
   }
 }
