@@ -46,8 +46,10 @@ Detailed documentation on each class and module is available in the `docs` folde
 
 ## Authors
 
-- [Your Name](mailto:your.email@example.com)
-- Other contributors
+- [Christian Vahamonde Gallego](https://github.com/Mambolulu)
+- [Aaron Olivieri](https://github.com/aOlivieri94)
+- [Valentin Lenz](https://github.com/VLenzers)
+- [Elia Schudel](https://github.com/EliaSchudel)
 
 ## Version History
 
