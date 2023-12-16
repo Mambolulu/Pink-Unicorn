@@ -67,8 +67,7 @@ This project is licensed under the MIT License - see the `LICENSE` file for deta
 
 ## Q&A (in german)
 <details>
-**Frage:**
-<summary> Gegen was schützt ein Salt und wie unterscheidet sich dieser zu einem Pepper?</summary>
+<summary>1. Gegen was schützt ein Salt und wie unterscheidet sich dieser zu einem Pepper?</summary>
 
 **Antwort:**
 
@@ -95,8 +94,7 @@ Zusammengefasst schützt ein Salt vor Rainbow-Tables und stellt sicher, dass geh
 </details>
 
 <details>
-**Frage:**
-<summary> Was spricht dagegen, das JWT eines Users im localstorage abzuspeichern? Was wäre eine bessere Alternative?</summary>
+<summary>2. Was spricht dagegen, das JWT eines Users im localstorage abzuspeichern? Was wäre eine bessere Alternative?</summary>
 
 **Antwort:**
 
