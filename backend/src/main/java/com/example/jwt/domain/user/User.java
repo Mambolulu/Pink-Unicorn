@@ -50,9 +50,6 @@ public class User extends ExtendedAuditEntity {
   )
   private Set<Role> roles = new HashSet<>();
 
-  @Column(name = "customer_rank")
-  private CustomerRank customerRank;
-
   @Column(name = "seeds")
   private int seeds;
 
@@ -70,7 +67,6 @@ public class User extends ExtendedAuditEntity {
     this.email = email;
     this.password = password;
     this.roles = roles;
-    this.customerRank = customerRank;
     this.seeds = seeds;
   }
 
@@ -154,15 +150,6 @@ public class User extends ExtendedAuditEntity {
     this.roles = roles;
     return this;
   }
-
-  public CustomerRank getCustomerRank() {
-    return customerRank;
-  }
-
-  public void setCustomerRank(CustomerRank customerRank) {
-    this.customerRank = customerRank;
-  }
-
   public int getSeeds() {
     return seeds;
   }
@@ -171,16 +158,9 @@ public class User extends ExtendedAuditEntity {
     this.seeds = seeds;
   }
 
-  // Methode zur Berechnung der Seeds basierend auf dem Kaufpreis
   public void calculateAndAddSeeds(double purchasePrice) {
     int earnedSeeds = (int) (purchasePrice / 2);
     this.seeds += earnedSeeds;
-    updateCustomerRank();
-  }
-
-  // Methode zur Aktualisierung des Kundenranges basierend auf den Seeds
-  private void updateCustomerRank() {
-    this.customerRank = CustomerRank.determineRank(this.seeds);
   }
 
   public boolean canPlaceOrder() {
