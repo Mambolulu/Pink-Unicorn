@@ -10,7 +10,7 @@ import java.util.UUID;
 @Table(name = "zip_code")
 public class ZipCode extends ExtendedEntity {
 
-    @Column(name = "zip_code", nullable = false, unique = true)
+    @Column(name = "zip_code", nullable = false)
     private int zipCode;
 
     @ManyToOne

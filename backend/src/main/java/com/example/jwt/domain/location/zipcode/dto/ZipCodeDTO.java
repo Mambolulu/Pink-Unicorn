@@ -2,6 +2,7 @@ package com.example.jwt.domain.location.zipcode.dto;
 
 import com.example.jwt.core.generic.ExtendedDTO;
 import com.example.jwt.domain.location.place.Place;
+import com.example.jwt.domain.location.place.dto.PlaceDTO;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
@@ -17,12 +18,12 @@ public class ZipCodeDTO extends ExtendedDTO {
     private int zipCode;
 
     @Valid
-    private Place place;
+    private PlaceDTO place;
 
     public ZipCodeDTO() {
     }
 
-    public ZipCodeDTO(UUID id, int zipCode, Place place) {
+    public ZipCodeDTO(UUID id, int zipCode, PlaceDTO place) {
         super(id);
         this.zipCode = zipCode;
         this.place = place;
@@ -37,11 +38,11 @@ public class ZipCodeDTO extends ExtendedDTO {
         return this;
     }
 
-    public Place getPlace() {
+    public PlaceDTO getPlace() {
         return place;
     }
 
-    public ZipCodeDTO setPlace(Place place) {
+    public ZipCodeDTO setPlace(PlaceDTO place) {
         this.place = place;
         return this;
     }

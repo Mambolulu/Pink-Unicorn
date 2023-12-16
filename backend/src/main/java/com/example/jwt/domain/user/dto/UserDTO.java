@@ -7,6 +7,8 @@ import com.example.jwt.domain.role.dto.RoleDTO;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.UUID;
@@ -17,6 +19,7 @@ public class UserDTO extends ExtendedDTO {
 
   private String lastName;
 
+  @Past
   private LocalDate birthDate;
 
   private String address;

@@ -1,39 +1,47 @@
 package com.example.jwt.domain.user.dto;
 
 import com.example.jwt.core.generic.ExtendedDTO;
+import com.example.jwt.domain.location.zipcode.dto.ZipCodeDTO;
 
 import java.time.LocalDate;
 import java.util.UUID;
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 public class UserRegisterDTO extends ExtendedDTO {
 
+  @NotNull
   private String firstName;
 
+  @NotNull
   private String lastName;
 
   private LocalDate birthDate;
 
+  @NotNull
   private String address;
 
-  private int plz;
-
-  private String rank;
+  @Valid
+  private ZipCodeDTO zipCode;
 
   @Email
   private String email;
 
+  @NotNull
   private String password;
 
 
   public UserRegisterDTO() {
   }
 
-  public UserRegisterDTO(UUID id, String firstName, String lastName, String email,
-      String password) {
+  public UserRegisterDTO(UUID id, String firstName, String lastName, LocalDate birthDate, String address, ZipCodeDTO zipCode, String email, String password) {
     super(id);
     this.firstName = firstName;
     this.lastName = lastName;
+    this.birthDate = birthDate;
+    this.address = address;
+    this.zipCode = zipCode;
     this.email = email;
     this.password = password;
   }
@@ -53,6 +61,33 @@ public class UserRegisterDTO extends ExtendedDTO {
 
   public UserRegisterDTO setLastName(String lastName) {
     this.lastName = lastName;
+    return this;
+  }
+
+  public LocalDate getBirthDate() {
+    return birthDate;
+  }
+
+  public UserRegisterDTO setBirthDate(LocalDate birthDate) {
+    this.birthDate = birthDate;
+    return this;
+  }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public UserRegisterDTO setAddress(String address) {
+    this.address = address;
+    return this;
+  }
+
+  public ZipCodeDTO getZipCode() {
+    return zipCode;
+  }
+
+  public UserRegisterDTO setZipCode(ZipCodeDTO zipCode) {
+    this.zipCode = zipCode;
     return this;
   }
 
