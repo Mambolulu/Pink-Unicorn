@@ -21,6 +21,15 @@ public class Product extends ExtendedEntity {
 
   private BigDecimal sellingPricePer100g;
 
+  public Product(UUID id, String name) {
+    this.id = id;
+    this.name = name;
+  }
+
+  public Product() {
+
+  }
+
   public UUID getId() {
     return id;
   }

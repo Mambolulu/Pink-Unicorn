@@ -161,6 +161,8 @@ $RECYCLE.BIN/
 *.lnk
 
 ### IntelliJ IDEA ###
+/backend/.idea
+/frontend/.idea
 .idea
 *.iws
 *.iml

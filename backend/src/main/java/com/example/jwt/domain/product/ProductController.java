@@ -44,7 +44,7 @@ public class ProductController {
             @RequestParam(required=false, defaultValue = "0") int page,
             @RequestParam(required=false, defaultValue = "10") int pageSize
     ) {
-        return new ResponseEntity<>(productService.findAll(PageRequest.of(page, pageSize, Sort.by("price").descending())), HttpStatus.OK);
+        return new ResponseEntity<>(productService.findAll(PageRequest.of(page, pageSize)), HttpStatus.OK);
     }
 
 //    Not sure if still needed
