@@ -18,8 +18,6 @@ public class UserRegisterDTO extends ExtendedDTO {
 
   private int plz;
 
-  private String rank;
-
   @Email
   private String email;
 

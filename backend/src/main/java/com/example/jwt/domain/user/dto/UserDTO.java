@@ -33,10 +33,12 @@ public class UserDTO extends ExtendedDTO {
   @Valid
   private Set<RoleDTO> roles;
 
+  private boolean isActive;
+
   public UserDTO() {
   }
 
-  public UserDTO(UUID id, String firstName, String lastName, LocalDate birthDate, String address, ZipCodeDTO zipCode, RankDTO rank, String email, Set<RoleDTO> roles) {
+  public UserDTO(UUID id, String firstName, String lastName, LocalDate birthDate, String address, ZipCodeDTO zipCode, RankDTO rank, String email, boolean isActive, Set<RoleDTO> roles) {
     super(id);
     this.firstName = firstName;
     this.lastName = lastName;
@@ -46,6 +48,7 @@ public class UserDTO extends ExtendedDTO {
     this.rank = rank;
     this.email = email;
     this.roles = roles;
+    this.isActive = isActive;
   }
 
   public String getFirstName() {
@@ -117,6 +120,15 @@ public class UserDTO extends ExtendedDTO {
 
   public UserDTO setRoles(Set<RoleDTO> roles) {
     this.roles = roles;
+    return this;
+  }
+
+  public boolean isActive() {
+    return isActive;
+  }
+
+  public UserDTO setActive(boolean active) {
+    isActive = active;
     return this;
   }
 }
