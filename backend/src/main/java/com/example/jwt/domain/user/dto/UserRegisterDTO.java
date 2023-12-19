@@ -24,6 +24,7 @@ public class UserRegisterDTO extends ExtendedDTO {
 
   @Valid
   private ZipCodeDTO zipCode;
+  private int plz;
 
   @Email
   private String email;
