@@ -61,15 +61,18 @@ public class WebSecurityConfig {
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(List.of("*"));
-    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+    configuration.setAllowedOrigins(List.of("*")); // oder spezifische Domains angeben
+    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
     configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
+    configuration.setExposedHeaders(List.of("Authorization"));
+    configuration.setAllowCredentials(true);
 
     UrlBasedCorsConfigurationSource configurationSource = new UrlBasedCorsConfigurationSource();
     configurationSource.registerCorsConfiguration("/**", configuration);
 
     return configurationSource;
   }
+
 
   @Bean
   public AuthenticationManager authenticationManager() {
