@@ -11,6 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -38,8 +40,19 @@ public class ServiceLayerUnitTest {
 
     @BeforeEach
     public void setUp() {
-        dummyProduct = new Product(UUID.randomUUID() ,"BBC");
-        dummyProducts = Stream.of(new Product(UUID.randomUUID(), "BBC"), new Product(UUID.randomUUID(), "Black")).collect(Collectors.toList());
+        UUID productId1 = UUID.randomUUID();
+        UUID productId2 = UUID.randomUUID();
+        String origin = "Test Origin";
+        BigDecimal purchasePrice = new BigDecimal("10.00");
+        BigDecimal sellingPrice = new BigDecimal("15.00");
+        LocalDate harvestDate = LocalDate.now();
+        int stock = 100;
+
+        dummyProduct = new Product(productId1, "BBC", origin, purchasePrice, sellingPrice, harvestDate, stock);
+        dummyProducts = Stream.of(
+                dummyProduct,
+                new Product(productId2, "Black", origin, purchasePrice, sellingPrice, harvestDate, stock)
+        ).collect(Collectors.toList());
     }
 
     @Test
@@ -56,5 +69,4 @@ public class ServiceLayerUnitTest {
         verify(productRepository, times(1)).findById(productArgumentCaptor.capture());
         assertThat(productArgumentCaptor.getValue()).isEqualTo(dummyProduct.getId());
     }
-
 }

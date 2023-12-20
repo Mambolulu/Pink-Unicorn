@@ -20,15 +20,18 @@ public class Product extends ExtendedEntity {
 
   private LocalDate harvestDate;
 
+  private int stock;
+
   public Product() { }
 
-  public Product(UUID id, String name, String origin, BigDecimal purchasePricePer100g, BigDecimal sellingPricePer100g, LocalDate harvestDate) {
+  public Product(UUID id, String name, String origin, BigDecimal purchasePricePer100g, BigDecimal sellingPricePer100g, LocalDate harvestDate, int stock) {
     super(id);
     this.name = name;
     this.origin = origin;
     this.purchasePricePer100g = purchasePricePer100g;
     this.sellingPricePer100g = sellingPricePer100g;
     this.harvestDate = harvestDate;
+    this.stock = stock;
   }
 
   public String getName() {
@@ -74,5 +77,13 @@ public class Product extends ExtendedEntity {
   public Product setHarvestDate(LocalDate harvestDate) {
     this.harvestDate = harvestDate;
     return this;
+  }
+
+  public int getStock() {
+    return stock;
+  }
+
+  public void setStock(int stock) {
+    this.stock = stock;
   }
 }

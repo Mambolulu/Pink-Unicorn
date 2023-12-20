@@ -27,6 +27,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -72,9 +74,23 @@ class WeblayerUnitTest {
   @BeforeEach
   public void setUp() {
     dummyToken = generateToken();
-    dummyProduct = new Product(UUID.randomUUID() ,"BBC");
-    dummyProducts = Stream.of(new Product(UUID.randomUUID(), "BBC"), new Product(UUID.randomUUID(), "Black")).collect(Collectors.toList());
+
+    // Example values for initializing Product objects
+    UUID productId1 = UUID.randomUUID();
+    UUID productId2 = UUID.randomUUID();
+    String origin = "Test Origin";
+    BigDecimal purchasePrice = new BigDecimal("10.00");
+    BigDecimal sellingPrice = new BigDecimal("15.00");
+    LocalDate harvestDate = LocalDate.now();
+    int stock = 100;
+
+    // Creating Product objects with the full constructor
+    dummyProducts = Stream.of(
+            new Product(productId1, "BBC", origin, purchasePrice, sellingPrice, harvestDate, stock),
+            new Product(productId2, "Black", origin, purchasePrice, sellingPrice, harvestDate, stock)
+    ).collect(Collectors.toList());
   }
+
 
   @Test
     /*
