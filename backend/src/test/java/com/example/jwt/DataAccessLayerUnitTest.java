@@ -26,10 +26,12 @@ public class DataAccessLayerUnitTest {
 
     @BeforeEach
     public void setUp() {
-        dummyProducts = Stream.of(new Product(UUID.randomUUID(), "BBC"), new Product(UUID.randomUUID(), "Black")).collect(Collectors.toList());
+        dummyProducts = Stream.of(new Product("BBC"), new Product("Black")).collect(Collectors.toList());
+        productRepository.saveAll(dummyProducts);
     }
     @Test
     public void findAll_requestAllProducts_expectAllProducts() {
+
         assertThat(productRepository.findAll()).usingRecursiveComparison().ignoringCollectionOrder().isEqualTo(dummyProducts);
     }
 }

@@ -5,6 +5,7 @@ import com.example.jwt.core.generic.ExtendedEntity;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 @Entity
 @Table(name = "products")
@@ -23,6 +24,11 @@ public class Product extends ExtendedEntity {
 
   public Product(UUID id, String name) {
     this.id = id;
+    this.name = name;
+  }
+
+  public Product(String name) {
+
     this.name = name;
   }
 
@@ -77,6 +83,19 @@ public class Product extends ExtendedEntity {
 
   public void setHarvestDate(LocalDate harvestDate) {
     this.harvestDate = harvestDate;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Product product = (Product) o;
+    return Objects.equals(id, product.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
   }
 
   private LocalDate harvestDate;
