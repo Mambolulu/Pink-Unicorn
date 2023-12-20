@@ -20,15 +20,18 @@ public class PurchaseDTO extends ExtendedDTO {
 
     private BigDecimal totalAmount;
 
+    private int collectedSeeds;
+
     public PurchaseDTO() { }
 
-    public PurchaseDTO(UUID id, UserDTO user, Product product, int quantity, LocalDate purchaseDate, BigDecimal totalAmount) {
+    public PurchaseDTO(UUID id, UserDTO user, Product product, int quantity, LocalDate purchaseDate, BigDecimal totalAmount, int collectedSeeds) {
         super(id);
         this.user = user;
         this.product = product;
         this.quantity = quantity;
         this.purchaseDate = purchaseDate;
         this.totalAmount = totalAmount;
+        this.collectedSeeds = collectedSeeds;
     }
 
     public UserDTO getUser() {
@@ -73,6 +76,15 @@ public class PurchaseDTO extends ExtendedDTO {
 
     public PurchaseDTO setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
+        return this;
+    }
+
+    public int getCollectedSeeds() {
+        return collectedSeeds;
+    }
+
+    public PurchaseDTO setCollectedSeeds(int collectedSeeds) {
+        this.collectedSeeds = collectedSeeds;
         return this;
     }
 }

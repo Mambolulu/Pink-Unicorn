@@ -1,6 +1,7 @@
 package com.example.jwt.domain.user;
 
 import com.example.jwt.core.generic.ExtendedServiceImpl;
+import com.example.jwt.domain.purchase.Purchase;
 import com.example.jwt.domain.role.Role;
 import com.example.jwt.domain.rank.Rank;
 import com.example.jwt.domain.rank.RankRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import static org.apache.catalina.realm.UserDatabaseRealm.getRoles;
 import java.util.Comparator;
@@ -94,5 +96,13 @@ public class UserServiceImpl extends ExtendedServiceImpl<User> implements UserSe
   @Override
   public Map<String, Integer> getTopCountriesByProductOrdersLastXDays(int days) {
     return ((UserRepository) repository).findTopCountriesByProductOrdersLastXDays(days);
+  }
+
+  @Override
+  public List<Purchase> retrievePurchaseHistory(){
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    UUID userId = ((User) authentication.getPrincipal()).getId();
+
+    return ((UserRepository) repository).retrieveUsersPurchaseHistory(userId);
   }
 }

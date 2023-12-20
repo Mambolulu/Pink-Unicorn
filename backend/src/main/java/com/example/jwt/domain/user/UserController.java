@@ -1,5 +1,8 @@
 package com.example.jwt.domain.user;
 
+import com.example.jwt.domain.purchase.Purchase;
+import com.example.jwt.domain.purchase.dto.PurchaseDTO;
+import com.example.jwt.domain.purchase.dto.PurchaseMapper;
 import com.example.jwt.domain.user.dto.UserDTO;
 import com.example.jwt.domain.user.dto.UserMapper;
 import com.example.jwt.domain.user.dto.UserRegisterDTO;
@@ -21,11 +24,13 @@ public class UserController {
 
   private final UserService userService;
   private final UserMapper userMapper;
+  private final PurchaseMapper purchaseMapper;
 
   @Autowired
-  public UserController(UserService userService, UserMapper userMapper) {
+  public UserController(UserService userService, UserMapper userMapper, PurchaseMapper purchaseMapper) {
     this.userService = userService;
     this.userMapper = userMapper;
+    this.purchaseMapper = purchaseMapper;
   }
 
   @GetMapping("/{id}")
@@ -59,6 +64,13 @@ public class UserController {
   public ResponseEntity<Void> deleteById(@PathVariable UUID id) {
     userService.deleteById(id);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+  }
+
+  @GetMapping("/retrieve/purchase/history")
+  @PreAuthorize("hasAuthority('CAN_RETRIEVE_PURCHASE_HISTORY')")
+  public ResponseEntity<List<PurchaseDTO>> retrievePurchaseHistory() {
+        List<Purchase> purchases = userService.retrievePurchaseHistory();
+    return new ResponseEntity<>(purchaseMapper.toDTOs(purchases), HttpStatus.NO_CONTENT);
   }
 
   @GetMapping("/statistics/highest/revenue")

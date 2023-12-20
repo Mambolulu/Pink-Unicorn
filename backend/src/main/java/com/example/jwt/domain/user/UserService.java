@@ -1,8 +1,10 @@
 package com.example.jwt.domain.user;
 
 import com.example.jwt.core.generic.ExtendedService;
+import com.example.jwt.domain.purchase.Purchase;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UserService extends UserDetailsService, ExtendedService<User> {
@@ -11,7 +13,9 @@ public interface UserService extends UserDetailsService, ExtendedService<User> {
 
   boolean isUserAdmin();
 
-  public User getTopUsersByRevenueLastMonth();
+  User getTopUsersByRevenueLastMonth();
 
-  public Map<String, Integer> getTopCountriesByProductOrdersLastXDays(int days);
+  Map<String, Integer> getTopCountriesByProductOrdersLastXDays(int days);
+
+  List<Purchase> retrievePurchaseHistory();
 }

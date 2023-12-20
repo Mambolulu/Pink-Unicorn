@@ -30,15 +30,19 @@ public class Purchase extends ExtendedEntity {
     @Column(name = "total_amount", nullable = false)
     private BigDecimal totalAmount;
 
+    @Column(name = "colected_Seeds")
+    private int collectedSeeds;
+
     public Purchase() { }
 
-    public Purchase(UUID id, User user, Product product, LocalDate purchaseDate, int quantity, BigDecimal totalAmount) {
+    public Purchase(UUID id, User user, Product product, int quantity, LocalDate purchaseDate, BigDecimal totalAmount, int collectedSeeds) {
         super(id);
         this.user = user;
         this.product = product;
-        this.purchaseDate = purchaseDate;
         this.quantity = quantity;
+        this.purchaseDate = purchaseDate;
         this.totalAmount = totalAmount;
+        this.collectedSeeds = collectedSeeds;
     }
 
     public User getUser() {
@@ -83,6 +87,15 @@ public class Purchase extends ExtendedEntity {
 
     public Purchase setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
+        return this;
+    }
+
+    public int getCollectedSeeds() {
+        return collectedSeeds;
+    }
+
+    public Purchase setCollectedSeeds(int colectedSeeds) {
+        this.collectedSeeds = colectedSeeds;
         return this;
     }
 }

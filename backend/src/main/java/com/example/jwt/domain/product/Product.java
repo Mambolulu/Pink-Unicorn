@@ -9,9 +9,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "products")
 public class Product extends ExtendedEntity {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private UUID id;
 
   private String name;
 
@@ -21,62 +18,61 @@ public class Product extends ExtendedEntity {
 
   private BigDecimal sellingPricePer100g;
 
-  public Product(UUID id, String name) {
-    this.id = id;
+  private LocalDate harvestDate;
+
+  public Product() { }
+
+  public Product(UUID id, String name, String origin, BigDecimal purchasePricePer100g, BigDecimal sellingPricePer100g, LocalDate harvestDate) {
+    super(id);
     this.name = name;
-  }
-
-  public Product() {
-
-  }
-  private int stock;
-
-  public UUID getId() {
-    return id;
-  }
-
-  public ExtendedEntity setId(UUID id) {
-    this.id = id;
-    return null;
+    this.origin = origin;
+    this.purchasePricePer100g = purchasePricePer100g;
+    this.sellingPricePer100g = sellingPricePer100g;
+    this.harvestDate = harvestDate;
   }
 
   public String getName() {
     return name;
   }
 
-  public void setName(String name) {
+  public Product setName(String name) {
     this.name = name;
+    return this;
   }
 
   public String getOrigin() {
     return origin;
   }
 
-  public void setOrigin(String origin) {
+  public Product setOrigin(String origin) {
     this.origin = origin;
+    return this;
   }
 
   public BigDecimal getPurchasePricePer100g() {
     return purchasePricePer100g;
   }
 
-  public void setPurchasePricePer100g(BigDecimal purchasePricePer100g) {
+  public Product setPurchasePricePer100g(BigDecimal purchasePricePer100g) {
     this.purchasePricePer100g = purchasePricePer100g;
+    return this;
   }
 
   public BigDecimal getSellingPricePer100g() {
     return sellingPricePer100g;
   }
 
-  public void setSellingPricePer100g(BigDecimal sellingPricePer100g) {
+  public Product setSellingPricePer100g(BigDecimal sellingPricePer100g) {
     this.sellingPricePer100g = sellingPricePer100g;
+    return this;
   }
 
-  public int getStock() {
-    return stock;
+  public LocalDate getHarvestDate() {
+    return harvestDate;
   }
 
-  public void setStock(int stock) {
-    this.stock = stock;
+  public Product setHarvestDate(LocalDate harvestDate) {
+    this.harvestDate = harvestDate;
+    return this;
   }
 }
