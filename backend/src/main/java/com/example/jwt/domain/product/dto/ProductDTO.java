@@ -8,30 +8,22 @@ import java.time.LocalDate;
 
 public class ProductDTO extends ExtendedDTO {
 
-    private UUID id;
     private String name;
     private String origin;
     private BigDecimal purchasePricePer100g;
     private BigDecimal sellingPricePer100g;
     private LocalDate harvestDate;
 
-  public ProductDTO(UUID id, String name, String origin, BigDecimal purchasePricePer100g, BigDecimal sellingPricePer100g, LocalDate harvestDate) {
+    private int stock;
+
+  public ProductDTO(UUID id, String name, String origin, BigDecimal purchasePricePer100g, BigDecimal sellingPricePer100g, LocalDate harvestDate, int stock) {
     super(id);
     this.name = name;
     this.origin = origin;
     this.purchasePricePer100g = purchasePricePer100g;
     this.sellingPricePer100g = sellingPricePer100g;
     this.harvestDate = harvestDate;
-  }
-
-  @Override
-  public UUID getId() {
-    return id;
-  }
-
-  public ExtendedDTO setId(UUID id) {
-    this.id = id;
-    return null;
+    this.stock = stock;
   }
 
   public String getName() {
@@ -72,5 +64,13 @@ public class ProductDTO extends ExtendedDTO {
 
   public void setHarvestDate(LocalDate harvestDate) {
     this.harvestDate = harvestDate;
+  }
+
+  public int getStock() {
+    return stock;
+  }
+
+  public void setStock(int stock) {
+    this.stock = stock;
   }
 }

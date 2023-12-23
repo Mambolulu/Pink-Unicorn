@@ -8,7 +8,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.example.jwt.domain.purchase.Purchase;
+import com.example.jwt.domain.role.Role;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -29,4 +31,7 @@ public interface UserRepository extends ExtendedRepository<User> {
           "WHERE p.user.id = :userId " +
           "GROUP BY p.product", nativeQuery = true)
   List<Purchase> retrieveUsersPurchaseHistory(UUID userId);
+
+  @Query("SELECT r FROM Role r WHERE r.name = :roleName")
+  Optional<Role> findRoleByName(@Param("roleName") String roleName);
 }
