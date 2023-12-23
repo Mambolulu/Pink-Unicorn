@@ -76,11 +76,11 @@ INSERT INTO zip_code (id, zip_code, place) VALUES
                                 ('7aead896-2bac-47a7-90e8-f4ed379dc117', '6994', 'e756ca11-225e-422d-95ca-233ba80fcfd7'); -- Aranno
 
 -- Product
-INSERT INTO products (id, name, origin, purchase_price_per100g, selling_price_per100g, harvest_date) VALUES
-                                ('fba7c58d-d18d-4ef1-be6e-5a0a4b99d8ad', 'White', 'China', 5, 15, '2022-11-04'),
-                                ('ce0f2ddc-66de-4338-9125-f02c3b881680', 'Green', 'Taiwan', 4, 14, '2020-12-12'),
-                                ('7c301b32-e467-458f-9fee-36fd4efcb163', 'Black', 'Japan', 6, 16, '2021-05-11'),
-                                ('0217d03c-bf19-4ad0-94f9-f76511cd8c67', 'Oolong', 'Japan', 12, 21, '2020-02-06'),
-                                ('a4d9d49e-9707-45b3-bd52-f67d5408ac5a', 'Medicinal Herbs', 'Taiwan', 3, 13, '2022-07-01'),
-                                ('0ec0e9e2-e321-44bb-8f6c-d64ba323ee4f', 'BBC', 'Maskini', 0, 200, '2023-12-12'),
-                                ('700af9a2-0cd9-4b72-babf-1cceb8215cb8', 'Godfather OG Weed', 'Jamaika', 45, 100, '2023-07-06');
+INSERT INTO products (id, name, origin, purchase_price_per100g, selling_price_per100g, harvest_date, stock) VALUES
+                                ('fba7c58d-d18d-4ef1-be6e-5a0a4b99d8ad', 'White', 'China', 5, 15, '2022-11-04', 100),
+                                ('ce0f2ddc-66de-4338-9125-f02c3b881680', 'Green', 'Taiwan', 4, 14, '2020-12-12', 101),
+                                ('7c301b32-e467-458f-9fee-36fd4efcb163', 'Black', 'Japan', 6, 16, '2021-05-11', 102),
+                                ('0217d03c-bf19-4ad0-94f9-f76511cd8c67', 'Oolong', 'Japan', 12, 21, '2020-02-06', 103),
+                                ('a4d9d49e-9707-45b3-bd52-f67d5408ac5a', 'Medicinal Herbs', 'Taiwan', 3, 13, '2022-07-01', 104),
+                                ('0ec0e9e2-e321-44bb-8f6c-d64ba323ee4f', 'BBC', 'Maskini', 0, 200, '2023-12-12', 105),
+                                ('700af9a2-0cd9-4b72-babf-1cceb8215cb8', 'Godfather OG Weed', 'Jamaika', 45, 100, '2023-07-06', 106);

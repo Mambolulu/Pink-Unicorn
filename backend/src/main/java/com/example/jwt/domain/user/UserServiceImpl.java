@@ -44,18 +44,31 @@ public class UserServiceImpl extends ExtendedServiceImpl<User> implements UserSe
 
   @Override
   public User register(User user) {
+    // Fetch the lowest rank
     Rank lowestRank = rankRepository.findAll().stream()
             .min(Comparator.comparing(Rank::getNeededSeeds))
             .orElseThrow(() -> new IllegalStateException("No ranks found"));
 
-    user.setRank(lowestRank); // Set the lowest rank
+    // Set the lowest rank and encode the password
+    user.setRank(lowestRank);
     user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+
+    // Retrieve the 'Client' role from the database
+    Role clientRole = ((UserRepository) repository).findRoleByName("CLIENT")
+            .orElseThrow(() -> new IllegalStateException("Client role not found"));
+
+    // Assign 'Client' role to the user
+    user.getRoles().add(clientRole);
+
+    // Save the user with the new role
     User savedUser = save(user);
 
+    // Update rank based on seeds (if applicable)
     updateRankBasedOnSeeds(savedUser);
 
     return savedUser;
   }
+
 
   public void updateRankBasedOnSeeds(User user) {
     // Logic to update the rank based on the seeds
