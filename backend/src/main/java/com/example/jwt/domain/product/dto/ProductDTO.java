@@ -13,7 +13,6 @@ public class ProductDTO extends ExtendedDTO {
     private BigDecimal purchasePricePer100g;
     private BigDecimal sellingPricePer100g;
     private LocalDate harvestDate;
-
     private int stock;
 
   public ProductDTO(UUID id, String name, String origin, BigDecimal purchasePricePer100g, BigDecimal sellingPricePer100g, LocalDate harvestDate, int stock) {

@@ -84,3 +84,13 @@ INSERT INTO products (id, name, origin, purchase_price_per100g, selling_price_pe
                                 ('a4d9d49e-9707-45b3-bd52-f67d5408ac5a', 'Medicinal Herbs', 'Taiwan', 3, 13, '2022-07-01', 104),
                                 ('0ec0e9e2-e321-44bb-8f6c-d64ba323ee4f', 'BBC', 'Maskini', 0, 200, '2023-12-12', 105),
                                 ('700af9a2-0cd9-4b72-babf-1cceb8215cb8', 'Godfather OG Weed', 'Jamaika', 45, 100, '2023-07-06', 106);
+
+-- User
+INSERT INTO users (id, created_at, modified_at, address, birth_date, email, first_name, is_active, last_name, password, seeds, created_by, last_modified_by, rank, zip_code) VALUES
+                                ('47143259-e965-450a-8244-aade6fd462c5', '2023-12-23 11:48:48.165161', '2023-12-23 11:48:48.165161', 'Playboystrasse 420', '1999-12-12', 'admin@admin.ch', 'Hengst', true, 'Stecher', '$2a$10$x/YapnuB5id.dy4ESkXAse7FJTfltIt7s.LqqdXngBz/vrWdPBaxq', 9000, null, null, '726574fb-2f19-4996-8c1b-a0dbf2234910', 'ce5ce0f6-724d-4028-8aa3-844b4e5afa7c'), -- Admin
+                                ('d822f2d2-61b5-495b-8618-5beb63a8b743', '2023-12-23 11:48:48.165161', '2023-12-23 11:48:48.165161', 'TheOnePiece is Real', '1999-12-12', 'client@client.ch', 'Gol D', true, 'Roger', '$2a$10$BXvY9aYKLNCnLcyXuYDY..1uJzHOmJH5Qo1G48DE5vWvripCMh7xq', 0, null, null, 'ed5cc869-522c-4dec-94f8-3d16a4e6d159', 'ce5ce0f6-724d-4028-8aa3-844b4e5afa7c'); -- Client
+
+-- User_Role
+INSERT INTO users_role (users_id, role_id) VALUES
+                                ('47143259-e965-450a-8244-aade6fd462c5', 'c3b1c9e9-5b7a-4b1a-9b7e-9c1a042474e0'), -- Admin
+                                ('d822f2d2-61b5-495b-8618-5beb63a8b743', '3b405974-5553-4646-99ec-8119b9a16ad6'); -- Client
