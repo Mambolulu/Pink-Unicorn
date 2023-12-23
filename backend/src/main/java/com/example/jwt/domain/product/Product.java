@@ -1,6 +1,8 @@
 package com.example.jwt.domain.product;
 
 import com.example.jwt.core.generic.ExtendedEntity;
+import com.example.jwt.domain.category.Category;
+import com.example.jwt.domain.origin.Origin;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -10,9 +12,16 @@ import java.util.UUID;
 @Table(name = "products")
 public class Product extends ExtendedEntity {
 
-  private String name;
+  @Column(name = "variety")
+  private String variety;
 
-  private String origin;
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "category_id")
+  private Category category;
+
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "origin_id")
+  private Origin origin;
 
   private BigDecimal purchasePricePer100g;
 
@@ -24,9 +33,10 @@ public class Product extends ExtendedEntity {
 
   public Product() { }
 
-  public Product(UUID id, String name, String origin, BigDecimal purchasePricePer100g, BigDecimal sellingPricePer100g, LocalDate harvestDate, int stock) {
+  public Product(UUID id, String variety, Category category, Origin origin, BigDecimal purchasePricePer100g, BigDecimal sellingPricePer100g, LocalDate harvestDate, int stock) {
     super(id);
-    this.name = name;
+    this.variety = variety;
+    this.category = category;
     this.origin = origin;
     this.purchasePricePer100g = purchasePricePer100g;
     this.sellingPricePer100g = sellingPricePer100g;
@@ -34,20 +44,29 @@ public class Product extends ExtendedEntity {
     this.stock = stock;
   }
 
-  public String getName() {
-    return name;
+  public String getVariety() {
+    return variety;
   }
 
-  public Product setName(String name) {
-    this.name = name;
+  public Product setVariety(String variety) {
+    this.variety = variety;
     return this;
   }
 
-  public String getOrigin() {
+  public Category getCategory() {
+    return category;
+  }
+
+  public Product setCategory(Category category) {
+    this.category = category;
+    return this;
+  }
+
+  public Origin getOrigin() {
     return origin;
   }
 
-  public Product setOrigin(String origin) {
+  public Product setOrigin(Origin origin) {
     this.origin = origin;
     return this;
   }
@@ -83,7 +102,8 @@ public class Product extends ExtendedEntity {
     return stock;
   }
 
-  public void setStock(int stock) {
+  public Product setStock(int stock) {
     this.stock = stock;
+    return this;
   }
 }
