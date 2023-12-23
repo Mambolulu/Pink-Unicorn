@@ -10,6 +10,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import java.util.Collections;
+
 
 @RestControllerAdvice
 public class CustomGlobalExceptionHandler {
@@ -34,6 +36,21 @@ public class CustomGlobalExceptionHandler {
         .build();
   }
 
+  @ExceptionHandler(ProductNotFoundException.class)
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  public ResponseError handleProductNotFoundException(ProductNotFoundException ex, HttpServletRequest request) {
+    return new ResponseError()
+            .setTimeStamp(LocalDate.now())
+            .setErrors(Collections.singletonMap("message", ex.getMessage()));
+  }
+
+  @ExceptionHandler(InsufficientStockException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseError handleInsufficientStockException(InsufficientStockException ex, HttpServletRequest request) {
+    return new ResponseError()
+            .setTimeStamp(LocalDate.now())
+            .setErrors(Collections.singletonMap("message", ex.getMessage()));
+  }
 }
 
 

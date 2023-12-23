@@ -27,11 +27,14 @@ dependencies {
     annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.5.5.Final'
     annotationProcessor group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: '2.7.17'
 
+    testAnnotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.5.2.Final'
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.7.17'
     testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.8.8'
+    testImplementation group: 'com.h2database', name: 'h2', version: '2.1.214'
 
     implementation group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: '1.12.0'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.7.18'
+
 }
 
 tasks.named('test') {

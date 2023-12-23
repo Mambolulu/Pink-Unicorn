@@ -1,6 +1,7 @@
 package com.example.jwt.domain.user;
 
 import com.example.jwt.core.generic.ExtendedAuditEntity;
+import com.example.jwt.domain.authority.Authority;
 import com.example.jwt.domain.location.zipcode.ZipCode;
 import com.example.jwt.domain.rank.Rank;
 import com.example.jwt.domain.role.Role;
@@ -41,6 +42,9 @@ public class User extends ExtendedAuditEntity {
   @Column(name = "password")
   private String password;
 
+  @Column(name = "isActive")
+  private boolean isActive;
+
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
       name = "users_role",
@@ -49,10 +53,13 @@ public class User extends ExtendedAuditEntity {
   )
   private Set<Role> roles = new HashSet<>();
 
+  @Column(name = "seeds")
+  private int seeds;
+
   public User() {
   }
 
-  public User(UUID id, String firstName, String lastName, LocalDate birthDate, String address, ZipCode zipCode, Rank rank, String email, String password, Set<Role> roles) {
+  public User(UUID id, String firstName, String lastName, LocalDate birthDate, String address, ZipCode zipCode, Rank rank, String email, String password, boolean isActive, Set<Role> roles) {
     super(id);
     this.firstName = firstName;
     this.lastName = lastName;
@@ -62,7 +69,9 @@ public class User extends ExtendedAuditEntity {
     this.rank = rank;
     this.email = email;
     this.password = password;
+    this.isActive = isActive;
     this.roles = roles;
+    this.seeds = seeds;
   }
 
   public String getFirstName() {
@@ -137,6 +146,15 @@ public class User extends ExtendedAuditEntity {
     return this;
   }
 
+  public boolean isActive() {
+    return isActive;
+  }
+
+  public User setActive(boolean active) {
+    isActive = active;
+    return this;
+  }
+
   public Set<Role> getRoles() {
     return roles;
   }
@@ -144,5 +162,23 @@ public class User extends ExtendedAuditEntity {
   public User setRoles(Set<Role> roles) {
     this.roles = roles;
     return this;
+  }
+  public int getSeeds() {
+    return seeds;
+  }
+
+  public void setSeeds(int seeds) {
+    this.seeds = seeds;
+  }
+
+  public void calculateAndAddSeeds(double purchasePrice) {
+    int earnedSeeds = (int) (purchasePrice / 2);
+    this.seeds += earnedSeeds;
+  }
+
+  public boolean canPlaceOrder() {
+    return this.roles.stream()
+            .flatMap(role -> role.getAuthorities().stream())
+            .anyMatch(authority -> authority.getName().equals(Authority.CAN_PLACE_ORDER));
   }
 }

@@ -10,6 +10,8 @@ import javax.persistence.Table;
 @Table(name = "authority")
 public class Authority extends ExtendedEntity {
 
+  public static final String CAN_PLACE_ORDER = "CAN_PLACE_ORDER";
+
   @Column(name = "name", nullable = false, unique = true)
   private String name;
 
