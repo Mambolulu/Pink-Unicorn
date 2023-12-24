@@ -17,6 +17,7 @@ public class UserRegisterDTO extends ExtendedDTO {
   @NotNull
   private String lastName;
 
+  @NotNull
   private LocalDate birthDate;
 
   @NotNull
@@ -24,7 +25,6 @@ public class UserRegisterDTO extends ExtendedDTO {
 
   @Valid
   private ZipCodeDTO zipCode;
-  private int plz;
 
   @Email
   private String email;

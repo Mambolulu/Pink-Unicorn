@@ -59,6 +59,7 @@ public class UserServiceImpl extends ExtendedServiceImpl<User> implements UserSe
 
     // Assign 'Client' role to the user
     user.getRoles().add(clientRole);
+    user.setActive(true);
 
     // Save the user with the new role
     User savedUser = save(user);
