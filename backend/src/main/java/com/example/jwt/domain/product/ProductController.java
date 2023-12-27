@@ -1,6 +1,9 @@
 package com.example.jwt.domain.product;
 
 import com.example.jwt.domain.product.dto.ProductMapper;
+import com.example.jwt.domain.user.User;
+import com.example.jwt.domain.user.UserService;
+import com.example.jwt.domain.user.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -9,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,11 +24,13 @@ import java.util.UUID;
 public class ProductController {
     private final ProductService productService;
     private final ProductMapper productMapper;
+    private final UserService userService;
 
     @Autowired
-    public ProductController(ProductService productService, ProductMapper productMapper) {
+    public ProductController(ProductService productService, ProductMapper productMapper, UserService userService) {
         this.productService = productService;
         this.productMapper = productMapper;
+        this.userService = userService;
     }
 
 //    @PostMapping({"", "/"})
@@ -44,14 +51,8 @@ public class ProductController {
             @RequestParam(required=false, defaultValue = "0") int page,
             @RequestParam(required=false, defaultValue = "10") int pageSize
     ) {
-        return new ResponseEntity<>(productService.findAll(PageRequest.of(page, pageSize, Sort.by("price").descending())), HttpStatus.OK);
+        return new ResponseEntity<>(productService.findAll(PageRequest.of(page, pageSize)), HttpStatus.OK);
     }
-
-//    Not sure if still needed
-//    @GetMapping({"/p={page}"})
-//    public ResponseEntity<List<Product>> retrieveAllOnPage(@PathVariable int page) {
-//        return new ResponseEntity<>(productService.findAll(PageRequest.of(page, 10, Sort.by("price").descending())), HttpStatus.OK);
-//    }
 
     @PutMapping({"", "/"})
     public ResponseEntity<Product> updateById(@RequestBody Product product) {
@@ -66,5 +67,21 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable UUID id) {
         return new ResponseEntity<>(productService.deleteById(id), HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/{productId}/purchase")
+    public ResponseEntity<PurchaseResult> purchaseProduct(
+            @PathVariable UUID productId,
+            @RequestParam double quantity,
+            Principal principal) {
+
+        // Benutzername aus dem Principal extrahieren
+        String username = principal.getName();
+        // Benutzer anhand des Benutzernamens finden
+        User buyer = (User) userService.loadUserByUsername(username);
+        // Kaufmethode des ProductService aufrufen
+        PurchaseResult purchaseResult = productService.purchaseProduct(buyer, productId, quantity);
+        // Rückgabe des Kaufresultats
+        return ResponseEntity.ok(purchaseResult);
     }
 }
