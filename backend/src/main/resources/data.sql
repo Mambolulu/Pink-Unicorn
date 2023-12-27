@@ -106,3 +106,13 @@ INSERT INTO products (id, variety, category_id, origin_id, purchase_price_per100
                                 -- Medical Herb
                                 ('972b7005-201f-4e25-96c1-c535424b9abc', 'Angelica Pack',           'ef3c631c-0d1a-40d3-9e9b-c09ea7edf25e', 'ed7399cb-8b98-4e25-9b5c-7e8b2bf2e06d', 42, 69,  '2021-09-29', 33),
                                 ('1fd0f331-aec4-4f3c-9917-329c06738bc9', 'Senna Leaves',            'ef3c631c-0d1a-40d3-9e9b-c09ea7edf25e', 'e41b92fe-81c1-4a37-9b23-71d86ee2f0f8', 52, 79,  '2020-11-15', 12);
+
+-- User
+INSERT INTO users (id, created_at, modified_at, address, birth_date, email, first_name, is_active, last_name, password, seeds, created_by, last_modified_by, rank, zip_code) VALUES
+                                                                                                                                                                                 ('47143259-e965-450a-8244-aade6fd462c5', '2023-12-23 11:48:48.165161', '2023-12-23 11:48:48.165161', 'Playboystrasse 420', '1999-12-12', 'admin@admin.ch', 'Hengst', true, 'Stecher', '$2a$10$x/YapnuB5id.dy4ESkXAse7FJTfltIt7s.LqqdXngBz/vrWdPBaxq', 9000, null, null, '726574fb-2f19-4996-8c1b-a0dbf2234910', 'ce5ce0f6-724d-4028-8aa3-844b4e5afa7c'), -- Admin
+                                                                                                                                                                                 ('d822f2d2-61b5-495b-8618-5beb63a8b743', '2023-12-23 11:48:48.165161', '2023-12-23 11:48:48.165161', 'TheOnePiece is Real', '1999-12-12', 'client@client.ch', 'Gol D', true, 'Roger', '$2a$10$BXvY9aYKLNCnLcyXuYDY..1uJzHOmJH5Qo1G48DE5vWvripCMh7xq', 0, null, null, 'ed5cc869-522c-4dec-94f8-3d16a4e6d159', 'ce5ce0f6-724d-4028-8aa3-844b4e5afa7c'); -- Client
+
+-- User_Role
+INSERT INTO users_role (users_id, role_id) VALUES
+                                               ('47143259-e965-450a-8244-aade6fd462c5', 'c3b1c9e9-5b7a-4b1a-9b7e-9c1a042474e0'), -- Admin
+                                               ('d822f2d2-61b5-495b-8618-5beb63a8b743', '3b405974-5553-4646-99ec-8119b9a16ad6'); -- Client
