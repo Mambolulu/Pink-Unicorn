@@ -6,30 +6,33 @@ import com.example.jwt.domain.location.zipcode.dto.ZipCodeDTO;
 import java.time.LocalDate;
 import java.util.UUID;
 import javax.validation.Valid;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 public class UserRegisterDTO extends ExtendedDTO {
 
-  @NotNull
+  @NotBlank(message = "{validation.notblank.firstname}")
   private String firstName;
 
-  @NotNull
+  @NotBlank(message = "{validation.notblank.lastname}")
   private String lastName;
 
-  @NotNull
+  @NotNull(message = "{validation.notnull.birthdate}")
+  @Past(message = "{validation.past.birthdate}")
   private LocalDate birthDate;
 
-  @NotNull
+  @NotBlank(message = "{validation.notblank.address}")
   private String address;
 
   @Valid
   private ZipCodeDTO zipCode;
 
-  @Email
+  @NotBlank(message = "{validation.notblank.email}")
+  @Email(message = "{validation.email.email}")
   private String email;
 
-  @NotNull
+  @NotBlank(message = "{validation.notblank.password}")
+  @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&:;,.?/~_+-=|\\\\]).{8,32}$",
+          message = "{validation.pattern.password}")
   private String password;
 
 
