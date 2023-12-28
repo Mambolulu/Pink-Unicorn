@@ -37,10 +37,6 @@ public class ProductServiceImpl extends ExtendedServiceImpl<Product> implements 
       throw new InsufficientStockException("Not enough stock available");
     }
 
-    if (!buyer.canPlaceOrder()) {
-      throw new RuntimeException("User is not authorized to place order"); // Passende Ausnahme verwenden
-    }
-
     double discountRate = buyer.getRank().getDiscount();
     double totalPrice = quantity * product.getSellingPricePer100g().doubleValue() * (1 - discountRate);
 

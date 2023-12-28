@@ -1,7 +1,6 @@
 package com.example.jwt.domain.user;
 
 import com.example.jwt.core.generic.ExtendedAuditEntity;
-import com.example.jwt.domain.authority.Authority;
 import com.example.jwt.domain.location.zipcode.ZipCode;
 import com.example.jwt.domain.rank.Rank;
 import com.example.jwt.domain.role.Role;
@@ -171,14 +170,9 @@ public class User extends ExtendedAuditEntity {
     this.seeds = seeds;
   }
 
-  public void calculateAndAddSeeds(double purchasePrice) {
+  public int calculateAndAddSeeds(double purchasePrice) {
     int earnedSeeds = (int) (purchasePrice / 2);
     this.seeds += earnedSeeds;
-  }
-
-  public boolean canPlaceOrder() {
-    return this.roles.stream()
-            .flatMap(role -> role.getAuthorities().stream())
-            .anyMatch(authority -> authority.getName().equals(Authority.CAN_PLACE_ORDER));
+    return earnedSeeds;
   }
 }

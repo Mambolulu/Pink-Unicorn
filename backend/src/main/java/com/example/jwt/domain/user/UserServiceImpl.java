@@ -70,7 +70,6 @@ public class UserServiceImpl extends ExtendedServiceImpl<User> implements UserSe
     return savedUser;
   }
 
-
   public void updateRankBasedOnSeeds(User user) {
     // Logic to update the rank based on the seeds
     int userSeeds = user.getSeeds();
