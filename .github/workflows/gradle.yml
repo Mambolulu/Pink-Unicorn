@@ -1,4 +1,4 @@
-name: Java CI-Pipeline with Gradle
+name: Java CI with Gradle
 
 on:
   push:
@@ -32,7 +32,7 @@ jobs:
       run: docker-compose up -d
 
     - name: Run Static Analysis
-      run: ./gradlew sonarqube
+      run: ./gradlew sonarqube #TODO config?
 
     - name: Run Unit Tests
-      run: ./gradlew test
+      run: ./gradlew test --tests #TODO "com.example.demo.*"
