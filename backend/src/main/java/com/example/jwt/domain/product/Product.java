@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
+
 @Entity
 @Table(name = "products")
 public class Product extends ExtendedEntity {
@@ -29,11 +30,12 @@ public class Product extends ExtendedEntity {
 
   private LocalDate harvestDate;
 
-  private int stock;
+  @Column(name = "stock_in_gram")
+  private int stockInGram;
 
   public Product() { }
 
-  public Product(UUID id, String variety, Category category, Origin origin, BigDecimal purchasePricePer100g, BigDecimal sellingPricePer100g, LocalDate harvestDate, int stock) {
+  public Product(UUID id, String variety, Category category, Origin origin, BigDecimal purchasePricePer100g, BigDecimal sellingPricePer100g, LocalDate harvestDate, int stockInGram) {
     super(id);
     this.variety = variety;
     this.category = category;
@@ -41,7 +43,7 @@ public class Product extends ExtendedEntity {
     this.purchasePricePer100g = purchasePricePer100g;
     this.sellingPricePer100g = sellingPricePer100g;
     this.harvestDate = harvestDate;
-    this.stock = stock;
+    this.stockInGram = stockInGram;
   }
 
   public String getVariety() {
@@ -98,12 +100,12 @@ public class Product extends ExtendedEntity {
     return this;
   }
 
-  public int getStock() {
-    return stock;
+  public int getStockInGram() {
+    return stockInGram;
   }
 
-  public Product setStock(int stock) {
-    this.stock = stock;
+  public Product setStockInGram(int stock) {
+    this.stockInGram = stock;
     return this;
   }
 }

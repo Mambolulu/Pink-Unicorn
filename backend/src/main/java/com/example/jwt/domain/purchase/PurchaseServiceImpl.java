@@ -6,11 +6,6 @@ import com.example.jwt.core.generic.ExtendedRepository;
 import com.example.jwt.core.generic.ExtendedServiceImpl;
 import com.example.jwt.domain.product.Product;
 import com.example.jwt.domain.product.ProductRepository;
-import com.example.jwt.domain.product.ProductService;
-import com.example.jwt.domain.product.PurchaseResult;
-import com.example.jwt.domain.purchase.dto.PurchaseDTO;
-import com.example.jwt.domain.rank.Rank;
-import com.example.jwt.domain.rank.RankRepository;
 import com.example.jwt.domain.user.User;
 import com.example.jwt.domain.user.UserDetailsImpl;
 import com.example.jwt.domain.user.UserRepository;
@@ -22,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.UUID;
 
 @Service
@@ -31,27 +25,18 @@ public class PurchaseServiceImpl extends ExtendedServiceImpl<Purchase> implement
     private final PurchaseRepository purchaseRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
-    private final RankRepository rankRepository;
-    private final ProductService productService;
     private final UserService userService;
 
-    protected PurchaseServiceImpl(ExtendedRepository<Purchase> repository, Logger logger, PurchaseRepository purchaseRepository, UserRepository userRepository, ProductRepository productRepository, RankRepository rankRepository, ProductService productService, UserService userService) {
+    protected PurchaseServiceImpl(ExtendedRepository<Purchase> repository, Logger logger, PurchaseRepository purchaseRepository, UserRepository userRepository, ProductRepository productRepository, UserService userService) {
         super(repository, logger);
         this.purchaseRepository = purchaseRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
-        this.rankRepository = rankRepository;
-        this.productService = productService;
         this.userService = userService;
     }
 
     @Override
-    public Purchase placeOrder(UUID productId, double quantity) {
-        /*Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UUID userId = ((User) authentication.getPrincipal()).getId();
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));*/
-
+    public Purchase placeOrder(UUID productId, double quantityInGram) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
@@ -60,18 +45,19 @@ public class PurchaseServiceImpl extends ExtendedServiceImpl<Purchase> implement
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found"));;
 
-        if (product.getStock() < quantity) {
+        if (product.getStockInGram() < quantityInGram) {
             throw new InsufficientStockException("Not enough stock available");
         }
 
-        BigDecimal sellingPrice = product.getSellingPricePer100g();
-        double discount = user.getRank().getDiscount();
-        double totalPrice = quantity * sellingPrice.doubleValue() * (1 - discount);
+        double sellingPricePer100g = product.getSellingPricePer100g().doubleValue();
+        double discount = 1 - (user.getRank().getDiscount() / 100); // for example discount is 11, needs to be 0.89
+        double totalPrice = sellingPricePer100g / 100 * quantityInGram * discount;
+        double roundedTotalPrice = Math.round(totalPrice * 20) / 20.0;
 
-        product.setStock((int)(product.getStock() - quantity));
+        product.setStockInGram((int)(product.getStockInGram() - quantityInGram));
         productRepository.save(product);
 
-        int seedsInThisPurchase = user.calculateAndAddSeeds(totalPrice);
+        int seedsInThisPurchase = user.calculateAndAddSeeds(roundedTotalPrice);
         userRepository.save(user);
 
         userService.updateRankBasedOnSeeds(user);
@@ -79,9 +65,9 @@ public class PurchaseServiceImpl extends ExtendedServiceImpl<Purchase> implement
         Purchase purchase = new Purchase();
         purchase.setUser(user);
         purchase.setProduct(product);
-        purchase.setQuantity((int) quantity);
+        purchase.setQuantity((int) quantityInGram);
         purchase.setPurchaseDate(LocalDate.now());
-        purchase.setTotalAmount(BigDecimal.valueOf(totalPrice));
+        purchase.setTotalAmount(BigDecimal.valueOf(roundedTotalPrice));
         purchase.setCollectedSeeds(seedsInThisPurchase);
 
         purchaseRepository.save(purchase);

@@ -1,7 +1,6 @@
 package com.example.jwt.domain.purchase;
 
 import com.example.jwt.core.generic.ExtendedService;
-import com.example.jwt.domain.product.PurchaseResult;
 
 import java.util.UUID;
 
