@@ -7,9 +7,9 @@ services:
     ports:
       - "5432:5432" # Map the container's port 5432 to the host machine
     environment:
-      POSTGRES_DB: postgres # Replace with your PostgreSQL database name
-      POSTGRES_USER: postgres # Replace with your PostgreSQL username
-      POSTGRES_PASSWORD: postgrespw # Replace with your PostgreSQL password
+      POSTGRES_DB: postgres@mambolulu.internet-box.ch # Replace with your PostgreSQL database name
+      POSTGRES_USER: unicorn # Replace with your PostgreSQL username
+      POSTGRES_PASSWORD: pink # Replace with your PostgreSQL password
 
   # Spring Boot Application
   spring-backend:
@@ -21,9 +21,9 @@ services:
     depends_on:
       - postgres # Ensure the Spring Boot app starts after the database
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres # Replace with your PostgreSQL database URL
-      SPRING_DATASOURCE_USERNAME: postgres # Replace with your PostgreSQL username
-      SPRING_DATASOURCE_PASSWORD: postgrespw # Replace with your PostgreSQL password
+      SPRING_DATASOURCE_URL: jdbc:postgresql://mambolulu.internet-box.ch:5432/postgres # Replace with your PostgreSQL database URL
+      SPRING_DATASOURCE_USERNAME: unicorn # Replace with your PostgreSQL username
+      SPRING_DATASOURCE_PASSWORD: pink # Replace with your PostgreSQL password
 
 
   # React Frontend

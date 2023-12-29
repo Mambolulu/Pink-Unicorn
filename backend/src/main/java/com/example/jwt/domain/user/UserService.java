@@ -11,6 +11,8 @@ public interface UserService extends UserDetailsService, ExtendedService<User> {
 
   User register(User user);
 
+  User getAuthenticatedUser();
+
   boolean isUserAdmin();
 
   User getTopUsersByRevenueLastMonth();
@@ -19,5 +21,5 @@ public interface UserService extends UserDetailsService, ExtendedService<User> {
 
   List<Purchase> retrievePurchaseHistory();
 
-  public void updateRankBasedOnSeeds(User user);
+  void updateRankBasedOnSeeds(User user);
 }

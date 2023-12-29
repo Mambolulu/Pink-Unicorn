@@ -70,6 +70,20 @@ public class UserServiceImpl extends ExtendedServiceImpl<User> implements UserSe
     return savedUser;
   }
 
+  @Override
+  public User getAuthenticatedUser() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication != null && authentication.isAuthenticated()) {
+      Object principal = authentication.getPrincipal();
+
+      if (principal instanceof UserDetails) {
+        User user = (User) principal;
+        return user;
+      }
+    }
+    return null;
+  }
+
   public void updateRankBasedOnSeeds(User user) {
     // Logic to update the rank based on the seeds
     int userSeeds = user.getSeeds();
