@@ -19,9 +19,9 @@ public class ProductDTO extends ExtendedDTO {
     private BigDecimal purchasePricePer100g;
     private BigDecimal sellingPricePer100g;
     private LocalDate harvestDate;
-    private int stock;
+    private int stockInGram;
 
-    public ProductDTO(UUID id, String variety, Category category, Origin origin, BigDecimal purchasePricePer100g, BigDecimal sellingPricePer100g, LocalDate harvestDate, int stock) {
+    public ProductDTO(UUID id, String variety, Category category, Origin origin, BigDecimal purchasePricePer100g, BigDecimal sellingPricePer100g, LocalDate harvestDate, int stockInGram) {
         super(id);
         this.variety = variety;
         this.category = category;
@@ -29,7 +29,7 @@ public class ProductDTO extends ExtendedDTO {
         this.purchasePricePer100g = purchasePricePer100g;
         this.sellingPricePer100g = sellingPricePer100g;
         this.harvestDate = harvestDate;
-        this.stock = stock;
+        this.stockInGram = stockInGram;
     }
 
     public String getVariety() {
@@ -86,12 +86,12 @@ public class ProductDTO extends ExtendedDTO {
         return this;
     }
 
-    public int getStock() {
-        return stock;
+    public int getStockInGram() {
+        return stockInGram;
     }
 
     public ProductDTO setStock(int stock) {
-        this.stock = stock;
+        this.stockInGram = stock;
         return this;
     }
 }

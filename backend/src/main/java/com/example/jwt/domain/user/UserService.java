@@ -18,4 +18,6 @@ public interface UserService extends UserDetailsService, ExtendedService<User> {
   Map<String, Integer> getTopCountriesByProductOrdersLastXDays(int days);
 
   List<Purchase> retrievePurchaseHistory();
+
+  public void updateRankBasedOnSeeds(User user);
 }

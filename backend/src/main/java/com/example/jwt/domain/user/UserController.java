@@ -66,13 +66,6 @@ public class UserController {
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
-  @GetMapping("/retrieve/purchase/history")
-  @PreAuthorize("hasAuthority('CAN_RETRIEVE_PURCHASE_HISTORY')")
-  public ResponseEntity<List<PurchaseDTO>> retrievePurchaseHistory() {
-        List<Purchase> purchases = userService.retrievePurchaseHistory();
-    return new ResponseEntity<>(purchaseMapper.toDTOs(purchases), HttpStatus.NO_CONTENT);
-  }
-
   @GetMapping("/statistics/highest/revenue")
   public ResponseEntity<UserDTO> getTopCustomersByRevenueLastMonth() {
     if (userService.isUserAdmin()) {
