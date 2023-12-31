@@ -44,7 +44,7 @@ public class Product extends ExtendedEntity {
     this.stock = stock;
   }
 
-  public Product(String variety1, Category category1, Origin origin1, BigDecimal purchasePrice, BigDecimal sellingPrice, LocalDate harvestDate, int stock) {
+  public Product(String variety, Category category, Origin origin, BigDecimal purchasePricePer100g, BigDecimal sellingPricePer100g, LocalDate harvestDate, int stock) {
     this.variety = variety;
     this.category = category;
     this.origin = origin;
