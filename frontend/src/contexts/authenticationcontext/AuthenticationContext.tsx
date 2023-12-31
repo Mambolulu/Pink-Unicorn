@@ -34,7 +34,7 @@ export interface AuthenticationContextProviderProps {
 const AuthenticationContextProvider = ({ children }: AuthenticationContextProviderProps) => {
   const api: AxiosInstance = AxiosUtility.getApi();
   const [principal, setPrincipal] = useState<User | undefined>();
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false); // Initialize as false
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   const reducer = (state: ActionTypes, action: ActionTypes) => {
     switch (action) {
@@ -54,10 +54,8 @@ const AuthenticationContextProvider = ({ children }: AuthenticationContextProvid
       const token = localStorage.getItem('token');
       if (token) {
 
-        // Now, make a GET request to retrieve Max Mustermann's profile
         const profileResponse = await api.get('/users/profile');
 
-        // Set the retrieved user data in the state
         setPrincipal(profileResponse.data);
 
         dispatch(ActionTypes.AUTHENTICATED);
@@ -75,18 +73,18 @@ const AuthenticationContextProvider = ({ children }: AuthenticationContextProvid
 
   const hasAnyAuthority = (authorities: Authority["name"][]): boolean => {
     if (!principal) {
-      return false; // No principal, so no authorities
+      return false;
     }
 
     for (const authority of authorities) {
       for (const role of principal.roles) {
         if (role.authorities.find(auth => auth.name === authority)) {
-          return true; // User has the required authority
+          return true;
         }
       }
     }
 
-    return false; // User does not have any of the specified authorities
+    return false;
   };
 
 

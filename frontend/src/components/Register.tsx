@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
+import './Register.css';
+import AxiosUtility from '../utility/AxiosUtility';
+import {AxiosInstance} from 'axios';
 
 const Register = () => {
+    const api: AxiosInstance = AxiosUtility.getApi();
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
         birthDate: '',
         address: '',
-        zipCodeId: '', // Verwenden Sie zipCodeId, um die ID des Postleitzahlenobjekts zu speichern
+        zipCodeId: '',
         email: '',
         password: '',
     });
@@ -26,7 +30,7 @@ const Register = () => {
             zipCode: { id: formData.zipCodeId }
         };
         // Senden der Registrierungsdaten an das Backend
-        axios.post('/users/register', requestData)
+        api.post('/users/register', requestData)
             .then(response => {
                 setIsRegistered(true);
             })
@@ -35,14 +39,14 @@ const Register = () => {
             });
     };
 
-    if (isRegistered) {
-        return <Navigate to="/login" />;
-    }
+    // if (isRegistered) {
+    //     return <Navigate to="/login" />;
+    // }
 
     return (
-        <div>
+        <div className="register-container">
             <h1>Register</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="register-form">
                 <input
                     type="text"
                     name="firstName"
