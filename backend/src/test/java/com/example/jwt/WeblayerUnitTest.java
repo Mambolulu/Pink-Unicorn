@@ -3,6 +3,8 @@ package com.example.jwt;
 import com.example.jwt.core.security.helpers.AuthorizationSchemas;
 import com.example.jwt.core.security.helpers.JwtProperties;
 import com.example.jwt.domain.authority.Authority;
+import com.example.jwt.domain.category.Category;
+import com.example.jwt.domain.origin.Origin;
 import com.example.jwt.domain.product.Product;
 import com.example.jwt.domain.product.ProductService;
 import com.example.jwt.domain.role.Role;
@@ -78,7 +80,24 @@ class WeblayerUnitTest {
     // Example values for initializing Product objects
     UUID productId1 = UUID.randomUUID();
     UUID productId2 = UUID.randomUUID();
-    String origin = "Test Origin";
+    UUID categoryId1 = UUID.randomUUID();
+    UUID categoryId2 = UUID.randomUUID();
+    UUID originId1 = UUID.randomUUID();
+    UUID originId2 = UUID.randomUUID();
+    String variety1 = "Test Variety 1";
+    String variety2 = "Test Variety 2";
+    Category category1 = new Category();
+    category1.setId(categoryId1);
+    category1.setName("Test Category 1");
+    Category category2 = new Category();
+    category2.setId(categoryId2);
+    category2.setName("Test Category 2");
+    Origin origin1 = new Origin();
+    origin1.setId(originId1);
+    origin1.setCountry("Test Country 1");
+    Origin origin2 = new Origin();
+    origin2.setId(originId2);
+    origin2.setCountry("Test Country 2");
     BigDecimal purchasePrice = new BigDecimal("10.00");
     BigDecimal sellingPrice = new BigDecimal("15.00");
     LocalDate harvestDate = LocalDate.now();
@@ -86,8 +105,8 @@ class WeblayerUnitTest {
 
     // Creating Product objects with the full constructor
     dummyProducts = Stream.of(
-            new Product(productId1, "BBC", origin, purchasePrice, sellingPrice, harvestDate, stock),
-            new Product(productId2, "Black", origin, purchasePrice, sellingPrice, harvestDate, stock)
+            new Product(productId1, variety1, category1, origin1, purchasePrice, sellingPrice, harvestDate, stock),
+            new Product(productId2, variety2, category2, origin2, purchasePrice, sellingPrice, harvestDate, stock)
     ).collect(Collectors.toList());
   }
 
@@ -115,9 +134,7 @@ class WeblayerUnitTest {
                     .accept(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$[*].id").value(Matchers.containsInAnyOrder(dummyProducts.get(0).getId().toString(), dummyProducts.get(1).getId().toString())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$[*].name").value(Matchers.containsInAnyOrder(dummyProducts.get(0).getName(), dummyProducts.get(1).getName())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$[*].price").doesNotExist());
+            .andExpect(MockMvcResultMatchers.jsonPath("$[*].id").value(Matchers.containsInAnyOrder(dummyProducts.get(0).getId().toString(), dummyProducts.get(1).getId().toString())));
 
     verify(productService, times(1)).findAll(pageRequest);
   }

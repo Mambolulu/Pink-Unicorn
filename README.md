@@ -121,5 +121,25 @@ Eine sicherere Alternative ist die Verwendung von HttpOnly-Cookies für die Spei
 4. **Same-Site-Attribut:** Durch Festlegen des Same-Site-Attributs können Sie Cookies vor Cross-Site Request Forgery (CSRF)-Angriffen schützen.
 
 Insgesamt ist die Verwendung von HttpOnly-Cookies eine sicherere und empfohlene Methode zur Speicherung von JWTs und anderen sensiblen Daten, die für die Authentifizierung verwendet werden.
+</details>
 
+<details>
+<summary>3. Welche Optimierungsvorschläge werden nach erfolgter Analyse mit SonarLint gegeben?</summary>
+
+**Antwort:**
+
+Nach der Analyse mit SonarLint werden je nach Code-Qualität und -Struktur verschiedene Optimierungsvorschläge gemacht. Einige der häufigen Vorschläge sind:
+
+1. **Code Refactoring:** Dies umfasst Verbesserungen in der Code-Struktur, Vereinfachung von komplexem Code und Entfernen unnötiger Abhängigkeiten.
+
+2. **Performance-Optimierung:** Identifizierung von ineffizienten Code-Segmenten, die die Leistung beeinträchtigen könnten.
+
+3. **Sicherheitslücken beheben:** Aufdecken von Sicherheitslücken und Vorschläge zur Absicherung des Codes.
+
+4. **Verbesserung der Lesbarkeit:** Vorschläge zur besseren Dokumentation des Codes, Kommentare oder Benennung von Variablen und Methoden für eine bessere Verständlichkeit.
+
+5. **Best Practices:** Anpassungen an allgemeine Best Practices und Konventionen für den Code-Stil und die Implementierung.
+
+Es ist wichtig zu beachten, dass die Vorschläge von SonarLint variieren können, je nach Konfiguration, Regelset und den spezifischen Code-Praktiken in Ihrem Projekt.
+</details>
 ---
