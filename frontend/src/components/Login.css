@@ -16,10 +16,10 @@
 .login-form {
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Erhöhen Sie den Abstand zwischen den Elementen */
+    gap: 15px;
 }
 
-.login-form div { /* Wrapper für jedes Feld */
+.login-form div {
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -27,14 +27,14 @@
 
 .login-form label {
     font-weight: bold;
-    margin-bottom: 5px; /* Abstand zwischen Label und Input */
+    margin-bottom: 5px;
 }
 
 .login-form input {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 100%; /* Stellen Sie sicher, dass die Input-Felder vollständig sind */
+    width: 100%;
 }
 
 .login-form button {

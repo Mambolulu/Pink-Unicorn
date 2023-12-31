@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
 import './Register.css';
+import AxiosUtility from '../utility/AxiosUtility';
+import {AxiosInstance} from 'axios';
 
 const Register = () => {
+    const api: AxiosInstance = AxiosUtility.getApi();
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -27,7 +30,7 @@ const Register = () => {
             zipCode: { id: formData.zipCodeId }
         };
         // Senden der Registrierungsdaten an das Backend
-        axios.post('/users/register', requestData)
+        api.post('/users/register', requestData)
             .then(response => {
                 setIsRegistered(true);
             })

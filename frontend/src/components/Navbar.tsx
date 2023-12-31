@@ -5,15 +5,15 @@ import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
     const { logout } = useAuth();
-    const navigate = useNavigate(); // Hook initialisieren
+    const navigate = useNavigate();
 
     const handleLogout = async () => {
-        await logout(); // Logout ausführen und warten, bis es abgeschlossen ist
-        navigate('/login'); // Navigieren zur Login-Seite
+        await logout();
+        navigate('/login');
     };
 
     const handleRegister = () => {
-        navigate('/register'); // Navigieren zur Registrierungsseite
+        navigate('/register');
     };
 
     return (
