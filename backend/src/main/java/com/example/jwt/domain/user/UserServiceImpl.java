@@ -14,13 +14,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static org.apache.catalina.realm.UserDatabaseRealm.getRoles;
-import java.util.Comparator;
 
 @Service
 public class UserServiceImpl extends ExtendedServiceImpl<User> implements UserService {
@@ -68,6 +64,20 @@ public class UserServiceImpl extends ExtendedServiceImpl<User> implements UserSe
     updateRankBasedOnSeeds(savedUser);
 
     return savedUser;
+  }
+
+  public Optional<User> getAuthenticatedUser() throws UsernameNotFoundException {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+    if (authentication != null && authentication.isAuthenticated()) {
+      Object principal = authentication.getPrincipal();
+
+      if (principal instanceof UserDetailsImpl) {
+        return Optional.of(((UserDetailsImpl) principal).user());
+      }
+    }
+
+    return Optional.empty();
   }
 
   public void updateRankBasedOnSeeds(User user) {
