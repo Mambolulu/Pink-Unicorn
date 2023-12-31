@@ -1,11 +1,40 @@
 {
   "info": {
-    "_postman_id": "YOUR_COLLECTION_ID",
-    "name": "User Registration and Authentication"
+    "_postman_id": "32068543-1c70a2a8-b0c2-4d31-9a1d-47f537af2907",
+    "name": "User Registration and Authentication",
+"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
       "name": "Register User",
+      "event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 200ms\", function () {",
+    "pm.expect(pm.response.responseTime).to.be.below(200);",
+"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+
+
       "request": {
         "method": "POST",
         "header": [
@@ -16,7 +45,12 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\"username\": \"your_username\", \"password\": \"your_password\"}"
+          "raw": "{\"username\": \"your_username\", \"password\": \"your_password\"}",
+"options": {
+              "raw": {
+                "language": "json"
+              }
+            }
         },
         "url": {
           "raw": "http://localhost:8080/register",
@@ -26,6 +60,7 @@
           ],
           "port": "8080",
           "path": [
+
             "register"
           ]
         }
@@ -33,6 +68,19 @@
     },
     {
       "name": "Login User",
+"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 200ms\", function () {",
+    "pm.expect(pm.response.responseTime).to.be.below(200);",
+"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
       "request": {
         "method": "POST",
         "header": [
@@ -75,6 +123,19 @@
     },
     {
       "name": "Access Protected Endpoint",
+"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 200ms\", function () {",
+    "pm.expect(pm.response.responseTime).to.be.below(200);",
+"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
       "request": {
         "method": "GET",
         "header": [

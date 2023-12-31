@@ -62,8 +62,7 @@ public class DataAccessLayerUnitTest {
                 new Product(variety2, category2, origin2, purchasePrice, sellingPrice, harvestDate, stock)
         ).collect(Collectors.toList());
 
-        List<Product> blabliblu = productRepository.saveAllAndFlush(dummyProducts);
-        List<Product> blabliblu2 = productRepository.findAll();
+        List<Product> blabliblu = productRepository.saveAll(dummyProducts);
     }
 
     @Test

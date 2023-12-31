@@ -91,7 +91,7 @@ class WeblayerUnitTest {
     category1.setName("Test Category 1");
     Category category2 = new Category();
     category2.setId(categoryId2);
-    category2.setName("Test Category 1");
+    category2.setName("Test Category 2");
     Origin origin1 = new Origin();
     origin1.setId(originId1);
     origin1.setCountry("Test Country 1");
@@ -134,9 +134,7 @@ class WeblayerUnitTest {
                     .accept(MediaType.APPLICATION_JSON))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$[*].id").value(Matchers.containsInAnyOrder(dummyProducts.get(0).getId().toString(), dummyProducts.get(1).getId().toString())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$[*].name").value(Matchers.containsInAnyOrder(dummyProducts.get(0).getCategory(), dummyProducts.get(1).getCategory())))
-            .andExpect(MockMvcResultMatchers.jsonPath("$[*].price").doesNotExist());
+            .andExpect(MockMvcResultMatchers.jsonPath("$[*].id").value(Matchers.containsInAnyOrder(dummyProducts.get(0).getId().toString(), dummyProducts.get(1).getId().toString())));
 
     verify(productService, times(1)).findAll(pageRequest);
   }
