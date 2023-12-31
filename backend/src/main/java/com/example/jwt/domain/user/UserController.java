@@ -67,6 +67,12 @@ public class UserController {
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
+  @GetMapping("/profile")
+  public ResponseEntity<UserDTO> retrieveProfile() {
+    User user = userService.findOrThrow(userService.getAuthenticatedUser());
+    return new ResponseEntity<>(userMapper.toDTO(user), HttpStatus.OK);
+  }
+
   @GetMapping("/statistics/highest/revenue")
   @PreAuthorize("hasAuthority('ADMIN')")
   public ResponseEntity<UserDTO> getTopCustomersByRevenueLastMonth() {

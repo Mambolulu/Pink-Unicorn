@@ -7,8 +7,10 @@ import Authority from "../../models/Authority";
 
 interface AuthenticationContextProps {
   principal: User | undefined;
+  isAuthenticated: boolean;
   hasAnyAuthority: (authorities: Authority["name"][]) => boolean;
   logout: () => Promise<void>;
+  authenticate: () => Promise<void>;
 }
 
 enum ActionTypes {
@@ -29,9 +31,11 @@ export interface AuthenticationContextProviderProps {
   children: ReactNode;
 }
 
-const AuthenticationContextProvider = ({children}: AuthenticationContextProviderProps) => {
-  const api: AxiosInstance = AxiosUtility.getApi()
+const AuthenticationContextProvider = ({ children }: AuthenticationContextProviderProps) => {
+  const api: AxiosInstance = AxiosUtility.getApi();
   const [principal, setPrincipal] = useState<User | undefined>();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false); // Initialize as false
+
   const reducer = (state: ActionTypes, action: ActionTypes) => {
     switch (action) {
       case ActionTypes.LOADING:
@@ -41,65 +45,62 @@ const AuthenticationContextProvider = ({children}: AuthenticationContextProvider
       case ActionTypes.AUTHENTICATED:
         return ActionTypes.AUTHENTICATED;
     }
-  }
-  const [state, dispatch] = useReducer(reducer, ActionTypes.LOADING)
+  };
+
+  const [state, dispatch] = useReducer(reducer, ActionTypes.LOADING);
 
   const authenticate = async () => {
     try {
-      const response = await api.post('/users/login', {"email": "max@mustermann","password": "TO_BE_REPLACED"});
-      if (response.headers.hasAuthorization) {
-        //@ts-ignore
-        localStorage.setItem('token', response.headers.getAuthorization());
-        //TODO: call backend to get principal (e.g through endpoint /users/profile) and pass it to setPrincipal(). The current Max Mustermann is just a mock!
-        setPrincipal({
-          id: "37bbc595-71cf-4080-b15c-6848d2d8d05c",
-          firstName: "Max",
-          lastName: "Mustermann",
-          email: "max@mustermann",
-          roles: [{
-            id: "38bbc595-71cf-4080-b15c-6848d2d8d05c",
-            name: "CLIENT",
-            authorities: [{
-              id: "39bbc595-71cf-4080-b15c-6848d2d8d05c",
-              name: "CAN_PLACE_ORDER"
-            }, {
-              id: "40bbc595-71cf-4080-b15c-6848d2d8d05c",
-              name: "'CAN_RETRIEVE_PURCHASE_HISTORY"
-            }, {
-              id: "41bbc595-71cf-4080-b15c-6848d2d8d05c",
-              name: "CAN_RETRIEVE_PRODUCTS"
-            }]
-          }]
-        })
-        dispatch(ActionTypes.AUTHENTICATED)
+      const token = localStorage.getItem('token');
+      if (token) {
+
+        // Now, make a GET request to retrieve Max Mustermann's profile
+        const profileResponse = await api.get('/users/profile');
+
+        // Set the retrieved user data in the state
+        setPrincipal(profileResponse.data);
+
+        dispatch(ActionTypes.AUTHENTICATED);
       } else {
-        dispatch(ActionTypes.FAILED)
+        dispatch(ActionTypes.FAILED);
       }
     } catch {
-      dispatch(ActionTypes.FAILED)
+      dispatch(ActionTypes.FAILED);
     }
-  }
+  };
 
   useEffect(() => {
-    authenticate()
-  }, [])
+    authenticate();
+  }, []);
 
-  //TODO: implement hasAnyAuthority() method. Check if principal has any of the authorities passed as parameter
   const hasAnyAuthority = (authorities: Authority["name"][]): boolean => {
-    return false;
-  }
+    if (!principal) {
+      return false; // No principal, so no authorities
+    }
+
+    for (const authority of authorities) {
+      for (const role of principal.roles) {
+        if (role.authorities.find(auth => auth.name === authority)) {
+          return true; // User has the required authority
+        }
+      }
+    }
+
+    return false; // User does not have any of the specified authorities
+  };
+
 
   const logout = async () => {
-    setPrincipal(undefined);
-    redirect("/login")
-  }
+    localStorage.removeItem('token'); // Remove the token from local storage
+    redirect('/login'); // Redirect to the login page
+  };
 
   const renderContent = () => {
     switch (state) {
       case ActionTypes.LOADING:
         return <p>LOADING...</p>;
       case ActionTypes.FAILED:
-        return <Navigate to={"/login"}/>
+        //return <Navigate to={"/login"}/>
       case ActionTypes.AUTHENTICATED:
         return children;
     }
@@ -109,8 +110,10 @@ const AuthenticationContextProvider = ({children}: AuthenticationContextProvider
       <AuthenticationContext.Provider
           value={{
             principal,
+            isAuthenticated,
             hasAnyAuthority,
-            logout
+            logout,
+            authenticate
           }}
       >
         {renderContent()}
