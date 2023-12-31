@@ -2,23 +2,34 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/authenticationcontext/AuthenticationContext';
+import {useNavigate} from 'react-router-dom';
+import AxiosUtility from '../utility/AxiosUtility';
+import {AxiosInstance} from 'axios';
 
 const Login = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [loginError, setLoginError] = useState<string>('');
+    const {authenticate} = useAuth();
+    const navigate = useNavigate();
+    const api: AxiosInstance = AxiosUtility.getApi();
 
-    const { setPrincipal } = useAuth(); // Annahme: Die useAuth-Funktion bietet eine setPrincipal-Methode
+    const { principal } = useAuth(); // Annahme: Die useAuth-Funktion bietet eine setPrincipal-Methode
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
             // Hier wird eine Anfrage an das Backend gesendet, um den Benutzer zu authentifizieren
-            const response = await axios.post('/api/login', { email, password });
-            // Setzt den principal im Kontext und aktualisiert den Zustand
-            setPrincipal(response.data);
-            setIsLoggedIn(true);
+            const response = await api.post('/users/login', { email, password });
+            // @ts-ignore
+            if (response.headers.has("Authorization")){
+                // @ts-ignore
+                const token = response.headers.get("Authorization");
+                localStorage.setItem("token", token);
+                await authenticate();
+                return navigate("/");
+            }
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 setLoginError(error.response.data.message || 'Login fehlgeschlagen');
@@ -29,9 +40,9 @@ const Login = () => {
     };
 
     // Umleitung zur Profilseite bei erfolgreichem Login
-    if (isLoggedIn) {
-        return <Navigate to="/profile" />;
-    }
+    // if (isLoggedIn) {
+    //     return <Navigate to="/profile" />;
+    // }
 
     return (
         <div>

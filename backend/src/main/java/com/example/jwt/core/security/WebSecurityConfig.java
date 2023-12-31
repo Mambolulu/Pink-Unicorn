@@ -65,14 +65,13 @@ public class WebSecurityConfig {
     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
     configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
     configuration.setExposedHeaders(List.of("Authorization"));
-    configuration.setAllowCredentials(true);
+    //configuration.setAllowCredentials(true);
 
     UrlBasedCorsConfigurationSource configurationSource = new UrlBasedCorsConfigurationSource();
     configurationSource.registerCorsConfiguration("/**", configuration);
 
     return configurationSource;
   }
-
 
   @Bean
   public AuthenticationManager authenticationManager() {

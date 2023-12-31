@@ -66,10 +66,9 @@ public class UserController {
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
-  @PreAuthorize("isAuthenticated()")
   @GetMapping("/profile")
   public ResponseEntity<UserDTO> retrieveProfile() {
-    User user = userService.getAuthenticatedUser();
+    User user = userService.findOrThrow(userService.getAuthenticatedUser());
     return new ResponseEntity<>(userMapper.toDTO(user), HttpStatus.OK);
   }
 

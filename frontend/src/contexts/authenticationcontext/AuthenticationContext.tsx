@@ -1,93 +1,121 @@
-import React, { createContext, ReactNode, useContext, useEffect, useReducer, useState } from "react";
+import React, {createContext, ReactNode, useContext, useEffect, useReducer, useState} from "react";
 import User from "../../models/User";
-import Authority from "../../models/Authority";
-import { AxiosInstance } from "axios";
+import {Navigate, redirect} from "react-router-dom";
+import {AxiosInstance} from "axios";
 import AxiosUtility from "../../utility/AxiosUtility";
+import Authority from "../../models/Authority";
 
-// Authentication Context Props
 interface AuthenticationContextProps {
   principal: User | undefined;
-  setPrincipal: (user: User | undefined) => void;
+  isAuthenticated: boolean;
   hasAnyAuthority: (authorities: Authority["name"][]) => boolean;
   logout: () => Promise<void>;
+  authenticate: () => Promise<void>;
 }
 
-// Action Types
 enum ActionTypes {
   LOADING,
   FAILED,
   AUTHENTICATED
 }
 
-// Authentication Context
-export const AuthenticationContext = createContext<AuthenticationContextProps>({} as AuthenticationContextProps);
+export const AuthenticationContext = createContext<AuthenticationContextProps>(
+    {} as AuthenticationContextProps
+);
 
-// useAuth Hook
 export const useAuth = () => {
   return useContext(AuthenticationContext);
 };
 
-// AuthenticationContextProvider Props
-interface AuthenticationContextProviderProps {
+export interface AuthenticationContextProviderProps {
   children: ReactNode;
 }
 
-function Navigate(props: { to: string }) {
-  return null;
-}
-
-// AuthenticationContextProvider Component
 const AuthenticationContextProvider = ({ children }: AuthenticationContextProviderProps) => {
   const api: AxiosInstance = AxiosUtility.getApi();
   const [principal, setPrincipal] = useState<User | undefined>();
-  const [state, dispatch] = useReducer((state: ActionTypes, action: ActionTypes) => action, ActionTypes.LOADING);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false); // Initialize as false
 
-  // Authenticate Function
-  useEffect(() => {
-    const authenticate = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        if (token) {
-          const response = await api.get('/users/profile');
-          setPrincipal(response.data);
-          dispatch(ActionTypes.AUTHENTICATED);
-        } else {
-          dispatch(ActionTypes.FAILED);
-        }
-      } catch {
-        dispatch(ActionTypes.FAILED);
-      }
-    };
-
-    authenticate();
-  }, [api]);
-
-  // hasAnyAuthority Function
-  const hasAnyAuthority = (authorities: Authority["name"][]): boolean => {
-    return principal?.roles.some(role => role.authorities.some(auth => authorities.includes(auth.name))) ?? false;
-  };
-
-  // Logout Function
-  const logout = async () => {
-    localStorage.removeItem('token');
-    setPrincipal(undefined);
-    dispatch(ActionTypes.FAILED);
-  };
-
-  // Render Function
-  const renderContent = () => {
-    switch (state) {
+  const reducer = (state: ActionTypes, action: ActionTypes) => {
+    switch (action) {
       case ActionTypes.LOADING:
-        return <p>Loading...</p>;
+        return ActionTypes.LOADING;
       case ActionTypes.FAILED:
-        return <Navigate to="/login" />;
+        return ActionTypes.FAILED;
       case ActionTypes.AUTHENTICATED:
-        return children;
+        return ActionTypes.AUTHENTICATED;
     }
   };
 
+  const [state, dispatch] = useReducer(reducer, ActionTypes.LOADING);
+
+  const authenticate = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (token) {
+
+        // Now, make a GET request to retrieve Max Mustermann's profile
+        const profileResponse = await api.get('/users/profile');
+
+        // Set the retrieved user data in the state
+        setPrincipal(profileResponse.data);
+
+        dispatch(ActionTypes.AUTHENTICATED);
+      } else {
+        dispatch(ActionTypes.FAILED);
+      }
+    } catch {
+      dispatch(ActionTypes.FAILED);
+    }
+  };
+
+  useEffect(() => {
+    authenticate();
+  }, []);
+
+  const hasAnyAuthority = (authorities: Authority["name"][]): boolean => {
+    if (!principal) {
+      return false; // No principal, so no authorities
+    }
+
+    for (const authority of authorities) {
+      for (const role of principal.roles) {
+        if (role.authorities.find(auth => auth.name === authority)) {
+          return true; // User has the required authority
+        }
+      }
+    }
+
+    return false; // User does not have any of the specified authorities
+  };
+
+
+  const logout = async () => {
+    localStorage.removeItem('token'); // Remove the token from local storage
+    redirect('/login'); // Redirect to the login page
+  };
+
+  const renderContent = () => {
+    switch (state) {
+      case ActionTypes.LOADING:
+        return <p>LOADING...</p>;
+      case ActionTypes.FAILED:
+        //return <Navigate to={"/login"}/>
+      case ActionTypes.AUTHENTICATED:
+        return children;
+    }
+  }
+
   return (
-      <AuthenticationContext.Provider value={{ principal, setPrincipal, hasAnyAuthority, logout }}>
+      <AuthenticationContext.Provider
+          value={{
+            principal,
+            isAuthenticated,
+            hasAnyAuthority,
+            logout,
+            authenticate
+          }}
+      >
         {renderContent()}
       </AuthenticationContext.Provider>
   );

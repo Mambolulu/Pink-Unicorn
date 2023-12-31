@@ -25,7 +25,7 @@ The system manages products, users, and purchases, featuring functionalities lik
 - To start the application and all related services using Docker Compose, open a terminal in the project root and run:
 
   ```bash
-  docker-compose up --force-recreate
+  docker-compose up --force-recreate --build
   ```
 
 This command will set up and launch all necessary components, including the Spring Boot application and the PostgreSQL database, as defined in your `docker-compose.yaml` file.

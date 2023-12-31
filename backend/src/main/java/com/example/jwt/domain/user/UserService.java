@@ -6,12 +6,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface UserService extends UserDetailsService, ExtendedService<User> {
 
   User register(User user);
 
-  User getAuthenticatedUser();
+  Optional<User> getAuthenticatedUser();
 
   boolean isUserAdmin();
 
