@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: react-frontend
-          image: image-react  # Eigene Docker-Images erstellen?
+          image: frontend/react  # TODO Docker-Images erstellen...
           ports:
             - containerPort: 3000

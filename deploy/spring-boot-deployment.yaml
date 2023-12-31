@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: spring-boot
-          image: image-spring-boot # Eigene Docker-Images erstellen?
+          image: backend/spring-app.jar
           ports:
             - containerPort: 8080
           env:
