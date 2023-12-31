@@ -1,40 +1,31 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'; // Import Navigate
-import AuthenticationContextProvider, { useAuth } from './contexts/authenticationcontext/AuthenticationContext'; // Import useAuth
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import AuthenticationContextProvider from './contexts/authenticationcontext/AuthenticationContext'; // Import des Context Providers
+import { Protected } from './routes/Protected';
 import Products from './components/Products';
-import UserProfile from './components/UserProfile';
-import Login from './components/Login';
-import Register from './components/Register';
-import Home from './pages/Home';
+import Login from './components/Login';     // Import der Login-Komponente
+import Register from './components/Register'; // Import der Register-Komponente
+import UserProfile from './components/UserProfile'; // Import der UserProfile-Komponente
+import Home from './pages/Home'; // Import der Home-Komponente
 
 function App() {
-    const { isAuthenticated } = useAuth(); // Get isAuthenticated from the AuthenticationContext
-    console.log('Is Authenticated:', isAuthenticated);
-
     return (
         <Router>
-            <AuthenticationContextProvider> {/* Wrap your entire app with the context provider */}
+            <AuthenticationContextProvider> {/* Verwendung des Context Providers */}
                 <Routes>
-                    {/* Public routes */}
-                    <Route path="users/login" element={isAuthenticated ? <Navigate to="/" /> : <Login />} /> {/* Redirect to home if authenticated */}
-                    <Route path="users/register" element={isAuthenticated ? <Navigate to="/" /> : <Register />} /> {/* Redirect to home if authenticated */}
+                    {/* Geschützte Routen */}
+                    <Route element={<Protected authoritiesToGrantAccess={["CAN_RETRIEVE_PRODUCTS"]}/>}>
+                        <Route path="/" element={<Home/>}/>
+                        <Route path="/products" element={<Products/>}/>
+                        <Route path="/profile" element={<UserProfile/>}/>
+                    </Route>
 
-                    {/* Protected routes */}
-                    {isAuthenticated && (
-                        <Route
-                            path="/"
-                            element={
-                                <Routes>
-                                    <Route index element={<Products />} />
-                                    <Route path="/profile" element={<UserProfile />} />
-                                    {/* Add more protected routes as needed */}
-                                </Routes>
-                            }
-                        />
-                    )}
+                    {/* Öffentliche Routen */}
+                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/register" element={<Register/>}/>
 
-                    {/* Default route (you can replace this with your Home component) */}
-                    <Route path="/" element={<Home />} />
+                    {/* Fallback für nicht gefundene Routen */}
+                    <Route path="*" element={<h1>Page Not Found</h1>}/>
                 </Routes>
             </AuthenticationContextProvider>
         </Router>
