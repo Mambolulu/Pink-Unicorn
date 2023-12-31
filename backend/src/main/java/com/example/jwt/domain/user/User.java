@@ -27,11 +27,11 @@ public class User extends ExtendedAuditEntity {
   @Column(name = "address")
   private String address;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "zip_code", referencedColumnName = "id")
   private ZipCode zipCode;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "rank", referencedColumnName = "id")
   private Rank rank;
 

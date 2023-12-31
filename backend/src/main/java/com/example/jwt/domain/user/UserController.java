@@ -1,13 +1,13 @@
 package com.example.jwt.domain.user;
 
-import com.example.jwt.domain.purchase.Purchase;
-import com.example.jwt.domain.purchase.dto.PurchaseDTO;
+import com.example.jwt.domain.origin.Origin;
+import com.example.jwt.domain.origin.dto.OriginDTO;
+import com.example.jwt.domain.origin.dto.OriginMapper;
 import com.example.jwt.domain.purchase.dto.PurchaseMapper;
 import com.example.jwt.domain.user.dto.UserDTO;
 import com.example.jwt.domain.user.dto.UserMapper;
 import com.example.jwt.domain.user.dto.UserRegisterDTO;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +24,14 @@ public class UserController {
 
   private final UserService userService;
   private final UserMapper userMapper;
+  private final OriginMapper originMapper;
   private final PurchaseMapper purchaseMapper;
 
   @Autowired
-  public UserController(UserService userService, UserMapper userMapper, PurchaseMapper purchaseMapper) {
+  public UserController(UserService userService, UserMapper userMapper, OriginMapper originMapper, PurchaseMapper purchaseMapper) {
     this.userService = userService;
     this.userMapper = userMapper;
+    this.originMapper = originMapper;
     this.purchaseMapper = purchaseMapper;
   }
 
@@ -67,22 +69,16 @@ public class UserController {
   }
 
   @GetMapping("/statistics/highest/revenue")
+  @PreAuthorize("hasAuthority('ADMIN')")
   public ResponseEntity<UserDTO> getTopCustomersByRevenueLastMonth() {
-    if (userService.isUserAdmin()) {
-      User topUserByRevenue = userService.getTopUsersByRevenueLastMonth();
-      return new ResponseEntity<>(userMapper.toDTO(topUserByRevenue), HttpStatus.OK);
-    } else {
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    User topUserByRevenue = userService.getTopUsersByRevenueLastMonth();
+    return new ResponseEntity<>(userMapper.toDTO(topUserByRevenue), HttpStatus.OK);
   }
 
   @GetMapping("/statistics/products/highest/country")
-  public ResponseEntity<Map<String, Integer>> getTopCountriesByProductOrders(@RequestParam(required = false, defaultValue = "30") int days) {
-    if (userService.isUserAdmin()) {
-      Map<String, Integer> topCountries = userService.getTopCountriesByProductOrdersLastXDays(days);
-      return new ResponseEntity<>(topCountries, HttpStatus.OK);
-    } else {
-      return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-    }
+  @PreAuthorize("hasAuthority('ADMIN')")
+  public ResponseEntity<OriginDTO> getTopCountriesByProductOrders(@RequestParam(required = false, defaultValue = "30") int days) {
+    Origin topCountry = userService.getTopCountriesByProductOrdersLastXDays(days);
+    return new ResponseEntity<>(originMapper.toDTO(topCountry), HttpStatus.OK);
   }
 }

@@ -30,7 +30,7 @@ public class Purchase extends ExtendedEntity {
     @Column(name = "total_amount", nullable = false)
     private BigDecimal totalAmount;
 
-    @Column(name = "colected_Seeds")
+    @Column(name = "collected_Seeds")
     private int collectedSeeds;
 
     public Purchase() { }
@@ -94,8 +94,8 @@ public class Purchase extends ExtendedEntity {
         return collectedSeeds;
     }
 
-    public Purchase setCollectedSeeds(int colectedSeeds) {
-        this.collectedSeeds = colectedSeeds;
+    public Purchase setCollectedSeeds(int collectedSeeds) {
+        this.collectedSeeds = collectedSeeds;
         return this;
     }
 }
