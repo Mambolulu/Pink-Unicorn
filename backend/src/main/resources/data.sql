@@ -17,21 +17,22 @@ INSERT INTO authority (id, name) VALUES
                                 ('8d67e034-5b60-4ae0-bfb3-69b1f90f3930', 'CAN_RETRIEVE_PURCHASE_HISTORY'),
                                 ('22f9238f-e454-4196-a1a2-72be4e97d10c', 'CAN_RETRIEVE_PRODUCTS'),
                                 ('a8091de1-77d8-42c7-a078-cfda4f5f6c7f', 'USER_MODIFY'),
-                                ('d1bedaf4-3dc0-4e23-87d0-c1414382a3cf', 'USER_DELETE');
+                                ('d1bedaf4-3dc0-4e23-87d0-c1414382a3cf', 'USER_DELETE'),
+                                ('dbd7e2f4-0329-453f-b20a-fdb9e4bd3ba4', 'ADMIN');
 
--- Role_Authority (CLIENT)
+
 INSERT INTO role_authority (role_id, authority_id) VALUES
+                                -- Role_Authority (CLIENT)
                                 ('3b405974-5553-4646-99ec-8119b9a16ad6', '96828a82-4ddf-47a8-8e58-938d0a0c399e'), -- CAN_PLACE_ORDER
                                 ('3b405974-5553-4646-99ec-8119b9a16ad6', '8d67e034-5b60-4ae0-bfb3-69b1f90f3930'), -- CAN_RETRIEVE_PURCHASE_HISTORY
-                                ('3b405974-5553-4646-99ec-8119b9a16ad6', '22f9238f-e454-4196-a1a2-72be4e97d10c'); -- CAN_RETRIEVE_PRODUCTS
-
--- Role_Authority (ADMIN)
-INSERT INTO role_authority (role_id, authority_id) VALUES
+                                ('3b405974-5553-4646-99ec-8119b9a16ad6', '22f9238f-e454-4196-a1a2-72be4e97d10c'), -- CAN_RETRIEVE_PRODUCTS
+                                -- Role_Authority (ADMIN)
                                 ('c3b1c9e9-5b7a-4b1a-9b7e-9c1a042474e0', '96828a82-4ddf-47a8-8e58-938d0a0c399e'), -- CAN_PLACE_ORDER
                                 ('c3b1c9e9-5b7a-4b1a-9b7e-9c1a042474e0', '8d67e034-5b60-4ae0-bfb3-69b1f90f3930'), -- CAN_RETRIEVE_PURCHASE_HISTORY
                                 ('c3b1c9e9-5b7a-4b1a-9b7e-9c1a042474e0', '22f9238f-e454-4196-a1a2-72be4e97d10c'), -- CAN_RETRIEVE_PRODUCTS
                                 ('c3b1c9e9-5b7a-4b1a-9b7e-9c1a042474e0', 'a8091de1-77d8-42c7-a078-cfda4f5f6c7f'), -- USER_MODIFY
-                                ('c3b1c9e9-5b7a-4b1a-9b7e-9c1a042474e0', 'd1bedaf4-3dc0-4e23-87d0-c1414382a3cf'); -- USER_DELETE
+                                ('c3b1c9e9-5b7a-4b1a-9b7e-9c1a042474e0', 'd1bedaf4-3dc0-4e23-87d0-c1414382a3cf'), -- USER_DELETE
+                                ('c3b1c9e9-5b7a-4b1a-9b7e-9c1a042474e0', 'dbd7e2f4-0329-453f-b20a-fdb9e4bd3ba4'); -- ADMIN
 
 -- Canton
 INSERT INTO canton (id, abbreviation, name) VALUES
@@ -120,3 +121,11 @@ INSERT INTO users_role (users_id, role_id) VALUES
                                 ('47143259-e965-450a-8244-aade6fd462c5', 'c3b1c9e9-5b7a-4b1a-9b7e-9c1a042474e0'),
                                 -- Client
                                 ('d822f2d2-61b5-495b-8618-5beb63a8b743', '3b405974-5553-4646-99ec-8119b9a16ad6');
+
+-- Purchases
+INSERT INTO purchases (id, collected_seeds, purchase_date, quantity, total_amount, products, users) VALUES
+                                -- Admin Purchases
+                                ('1e9dc7b2-ad30-4085-aecf-70545d7e8038', 249, '2023-12-30', 500, 498.40, 'fba7c58d-d18d-4ef1-be6e-5a0a4b99d8ad', '47143259-e965-450a-8244-aade6fd462c5'),
+                                -- Client Purchases
+                                ('11f664dc-5d13-4920-b699-6f7179fff84b', 203, '2023-12-31', 400, 407.70, 'fba7c58d-d18d-4ef1-be6e-5a0a4b99d8ad', 'd822f2d2-61b5-495b-8618-5beb63a8b743'),
+                                ('005b0657-18b1-4c20-b315-488026dbe9a7', 299, '2023-10-31', 600, 598.10, 'fba7c58d-d18d-4ef1-be6e-5a0a4b99d8ad', 'd822f2d2-61b5-495b-8618-5beb63a8b743');

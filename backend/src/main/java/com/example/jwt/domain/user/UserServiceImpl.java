@@ -1,22 +1,24 @@
 package com.example.jwt.domain.user;
 
 import com.example.jwt.core.generic.ExtendedServiceImpl;
-import com.example.jwt.domain.purchase.Purchase;
+import com.example.jwt.domain.origin.OriginCount;
 import com.example.jwt.domain.role.Role;
 import com.example.jwt.domain.rank.Rank;
 import com.example.jwt.domain.rank.RankRepository;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.UUID;
+=======
 import java.util.*;
 
 import static org.apache.catalina.realm.UserDatabaseRealm.getRoles;
+
 
 @Service
 public class UserServiceImpl extends ExtendedServiceImpl<User> implements UserService {
@@ -93,39 +95,25 @@ public class UserServiceImpl extends ExtendedServiceImpl<User> implements UserSe
   }
 
   @Override
-  public boolean isUserAdmin() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+  public OriginCount findMostOrderedOrigin(LocalDate startDate) {
+    Object[] result = ((UserRepository) repository).findMostOrderedOrigin(startDate);
 
-    if (authentication != null && authentication.isAuthenticated()){
-      Object principal = authentication.getPrincipal();
+    OriginCount mostOrderedOrigin = new OriginCount();
 
-      if (principal instanceof UserDetails) {   // Überprüfen, ob das Principal-Objekt UserDetails implementiert
-        User user = (User) principal;    // Hier gehen wir davon aus, dass Ihre User-Objekte eine getRoles()-Methode haben
-        Set<Role> roles = user.getRoles();
+    mostOrderedOrigin.setId(UUID.randomUUID());
 
-        if (roles.contains("ADMIN")) {
-          return true;
-        }
-      }
+    if (result != null && result.length == 2) {
+      mostOrderedOrigin.setCountry((String) result[0]);
+      mostOrderedOrigin.setOrderCount((int) result[1]);
     }
-    return false;
+
+    return mostOrderedOrigin;
   }
 
   @Override
   public User getTopUsersByRevenueLastMonth() {
-    return ((UserRepository) repository).findUserWithMostRevenueLastMonth();
-  }
-
-  @Override
-  public Map<String, Integer> getTopCountriesByProductOrdersLastXDays(int days) {
-    return ((UserRepository) repository).findTopCountriesByProductOrdersLastXDays(days);
-  }
-
-  @Override
-  public List<Purchase> retrievePurchaseHistory(){
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    UUID userId = ((User) authentication.getPrincipal()).getId();
-
-    return ((UserRepository) repository).retrieveUsersPurchaseHistory(userId);
+    LocalDate startDate = LocalDate.now().minusDays(30);
+    LocalDate endDate = LocalDate.now();
+    return ((UserRepository) repository).findUserWithMostRevenueLastMonth(startDate, endDate);
   }
 }

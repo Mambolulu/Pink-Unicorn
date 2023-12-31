@@ -16,7 +16,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -76,5 +79,26 @@ public class PurchaseServiceImpl extends ExtendedServiceImpl<Purchase> implement
                 .orElseThrow(() -> new RuntimeException("Failed to fetch saved purchase"));
 
         return purchase;
+    }
+
+    public List<PurchaseSummary> retrievePurchaseHistory() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        User user = userDetails.user();
+        List<Object[]> purchaseSummaries = purchaseRepository.findPurchaseSummaryByUser(user.getId());
+
+        List<PurchaseSummary> purchaseHistory = new ArrayList<>();
+
+        for (Object[] row : purchaseSummaries) {
+            PurchaseSummary summary = new PurchaseSummary();
+            summary.setId(UUID.randomUUID());
+            summary.setTeaVariety((String) row[0]);
+            summary.setTotalOrderedQuantity(((BigInteger) row[1]).intValue());
+            summary.setTotalCollectedSeeds(((BigInteger) row[2]).intValue());
+            purchaseHistory.add(summary);
+        }
+
+        return purchaseHistory;
     }
 }

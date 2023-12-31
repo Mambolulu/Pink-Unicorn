@@ -1,12 +1,13 @@
 package com.example.jwt.domain.user;
 
 import com.example.jwt.core.generic.ExtendedService;
-import com.example.jwt.domain.purchase.Purchase;
+import com.example.jwt.domain.origin.OriginCount;
 import org.springframework.security.core.userdetails.UserDetailsService;
-
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 
 public interface UserService extends UserDetailsService, ExtendedService<User> {
 
@@ -18,9 +19,9 @@ public interface UserService extends UserDetailsService, ExtendedService<User> {
 
   User getTopUsersByRevenueLastMonth();
 
-  Map<String, Integer> getTopCountriesByProductOrdersLastXDays(int days);
+  void updateRankBasedOnSeeds(User user);
 
-  List<Purchase> retrievePurchaseHistory();
+  OriginCount findMostOrderedOrigin(LocalDate startDate);
 
   void updateRankBasedOnSeeds(User user);
 }
