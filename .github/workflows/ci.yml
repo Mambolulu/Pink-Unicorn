@@ -32,7 +32,7 @@ jobs:
       run: docker-compose up -d
 
     - name: Run Static Analysis
-      run: ./gradlew sonarqube #TODO config?
+      run: ./gradlew sonarqube
 
     - name: Run Unit Tests
-      run: ./gradlew test --tests #TODO "com.example.demo.*"
+      run: ./gradlew test --tests backend/src/test/java/com/example/jwt
