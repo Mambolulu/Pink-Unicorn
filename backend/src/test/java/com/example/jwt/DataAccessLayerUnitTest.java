@@ -1,5 +1,6 @@
 package com.example.jwt;
 import com.example.jwt.domain.category.Category;
+import com.example.jwt.domain.category.CategoryRepository;
 import com.example.jwt.domain.origin.Origin;
 import com.example.jwt.domain.product.Product;
 import com.example.jwt.domain.product.ProductRepository;
@@ -41,16 +42,12 @@ public class DataAccessLayerUnitTest {
         String variety1 = "Test Variety 1";
         String variety2 = "Test Variety 2";
         Category category1 = new Category();
-
         category1.setName("Test Category 1");
         Category category2 = new Category();
-
         category2.setName("Test Category 2");
         Origin origin1 = new Origin();
-
         origin1.setCountry("Test Country 1");
         Origin origin2 = new Origin();
-
         origin2.setCountry("Test Country 2");
         BigDecimal purchasePrice = new BigDecimal("10.00");
         BigDecimal sellingPrice = new BigDecimal("15.00");
@@ -62,7 +59,7 @@ public class DataAccessLayerUnitTest {
                 new Product(variety2, category2, origin2, purchasePrice, sellingPrice, harvestDate, stock)
         ).collect(Collectors.toList());
 
-        List<Product> blabliblu = productRepository.saveAll(dummyProducts);
+        productRepository.saveAllAndFlush(dummyProducts);
     }
 
     @Test
