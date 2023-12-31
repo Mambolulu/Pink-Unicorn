@@ -1,7 +1,7 @@
 package com.example.jwt.domain.user;
 
 import com.example.jwt.core.generic.ExtendedServiceImpl;
-import com.example.jwt.domain.origin.Origin;
+import com.example.jwt.domain.origin.OriginCount;
 import com.example.jwt.domain.role.Role;
 import com.example.jwt.domain.rank.Rank;
 import com.example.jwt.domain.rank.RankRepository;
@@ -11,8 +11,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.util.Comparator;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl extends ExtendedServiceImpl<User> implements UserService {
@@ -75,14 +77,25 @@ public class UserServiceImpl extends ExtendedServiceImpl<User> implements UserSe
   }
 
   @Override
+  public OriginCount findMostOrderedOrigin(LocalDate startDate) {
+    Object[] result = ((UserRepository) repository).findMostOrderedOrigin(startDate);
+
+    OriginCount mostOrderedOrigin = new OriginCount();
+
+    mostOrderedOrigin.setId(UUID.randomUUID());
+
+    if (result != null && result.length == 2) {
+      mostOrderedOrigin.setCountry((String) result[0]);
+      mostOrderedOrigin.setOrderCount((int) result[1]);
+    }
+
+    return mostOrderedOrigin;
+  }
+
+  @Override
   public User getTopUsersByRevenueLastMonth() {
     LocalDate startDate = LocalDate.now().minusDays(30);
     LocalDate endDate = LocalDate.now();
     return ((UserRepository) repository).findUserWithMostRevenueLastMonth(startDate, endDate);
-  }
-
-  @Override
-  public Origin getTopCountriesByProductOrdersLastXDays(int days) {
-    return ((UserRepository) repository).findTopCountriesByProductOrdersLastXDays(days);
   }
 }

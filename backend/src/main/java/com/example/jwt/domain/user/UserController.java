@@ -1,12 +1,13 @@
 package com.example.jwt.domain.user;
 
-import com.example.jwt.domain.origin.Origin;
-import com.example.jwt.domain.origin.dto.OriginDTO;
-import com.example.jwt.domain.origin.dto.OriginMapper;
-import com.example.jwt.domain.purchase.dto.PurchaseMapper;
+import com.example.jwt.domain.origin.OriginCount;
+import com.example.jwt.domain.origin.dto.OriginCountDTO;
+import com.example.jwt.domain.origin.dto.OriginCountMapper;
 import com.example.jwt.domain.user.dto.UserDTO;
 import com.example.jwt.domain.user.dto.UserMapper;
 import com.example.jwt.domain.user.dto.UserRegisterDTO;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import javax.validation.Valid;
@@ -24,15 +25,13 @@ public class UserController {
 
   private final UserService userService;
   private final UserMapper userMapper;
-  private final OriginMapper originMapper;
-  private final PurchaseMapper purchaseMapper;
+  private final OriginCountMapper originCountMapper;
 
   @Autowired
-  public UserController(UserService userService, UserMapper userMapper, OriginMapper originMapper, PurchaseMapper purchaseMapper) {
+  public UserController(UserService userService, UserMapper userMapper, OriginCountMapper originCountMapper) {
     this.userService = userService;
     this.userMapper = userMapper;
-    this.originMapper = originMapper;
-    this.purchaseMapper = purchaseMapper;
+    this.originCountMapper = originCountMapper;
   }
 
   @GetMapping("/{id}")
@@ -75,10 +74,13 @@ public class UserController {
     return new ResponseEntity<>(userMapper.toDTO(topUserByRevenue), HttpStatus.OK);
   }
 
-  @GetMapping("/statistics/products/highest/country")
+  @GetMapping("/statistics/products/highest/origin")
   @PreAuthorize("hasAuthority('ADMIN')")
-  public ResponseEntity<OriginDTO> getTopCountriesByProductOrders(@RequestParam(required = false, defaultValue = "30") int days) {
-    Origin topCountry = userService.getTopCountriesByProductOrdersLastXDays(days);
-    return new ResponseEntity<>(originMapper.toDTO(topCountry), HttpStatus.OK);
+  public ResponseEntity<OriginCountDTO> getTopCountriesByProductOrders(@RequestParam(required = false, defaultValue = "30") int days) {
+    LocalDate startDate = LocalDate.now().minusDays(days);
+
+    OriginCount mostOrderedOrigin = userService.findMostOrderedOrigin(startDate);
+
+    return new ResponseEntity<>(originCountMapper.toDTO(mostOrderedOrigin), HttpStatus.OK);
   }
 }
