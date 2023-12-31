@@ -55,7 +55,7 @@ public class ServiceLayerUnitTest {
         category1.setName("Test Category 1");
         Category category2 = new Category();
         category2.setId(categoryId2);
-        category2.setName("Test Category 1");
+        category2.setName("Test Category 2");
         Origin origin1 = new Origin();
         origin1.setId(originId1);
         origin1.setCountry("Test Country 1");

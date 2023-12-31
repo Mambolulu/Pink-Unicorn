@@ -4,6 +4,8 @@ import com.example.jwt.core.security.helpers.AuthorizationSchemas;
 import com.example.jwt.core.security.helpers.JwtProperties;
 import com.example.jwt.domain.authority.Authority;
 import com.example.jwt.domain.authority.AuthorityRepository;
+import com.example.jwt.domain.category.Category;
+import com.example.jwt.domain.origin.Origin;
 import com.example.jwt.domain.product.Product;
 import com.example.jwt.domain.product.ProductRepository;
 import com.example.jwt.domain.role.Role;
@@ -28,6 +30,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -72,14 +76,45 @@ public class ProductIntegrationTests {
 
     @BeforeEach
     public void setUp() {
+        UUID productId1 = UUID.randomUUID();
+        UUID productId2 = UUID.randomUUID();
+        UUID categoryId1 = UUID.randomUUID();
+        UUID categoryId2 = UUID.randomUUID();
+        UUID originId1 = UUID.randomUUID();
+        UUID originId2 = UUID.randomUUID();
+        String variety1 = "Test Variety 1";
+        String variety2 = "Test Variety 2";
+        Category category1 = new Category();
+        category1.setId(categoryId1);
+        category1.setName("Test Category 1");
+        Category category2 = new Category();
+        category2.setId(categoryId2);
+        category2.setName("Test Category 1");
+        Origin origin1 = new Origin();
+        origin1.setId(originId1);
+        origin1.setCountry("Test Country 1");
+        Origin origin2 = new Origin();
+        origin2.setId(originId2);
+        origin2.setCountry("Test Country 2");
+        BigDecimal purchasePrice = new BigDecimal("10.00");
+        BigDecimal sellingPrice = new BigDecimal("15.00");
+        LocalDate harvestDate = LocalDate.now();
+        int stock = 100;
     }
 
     @Test
     public void retrieveAll_requestAllProducts_expectAllProductsAsDTOS() throws Exception {
-        Authority authority = authorityRepository.saveAndFlush(new Authority().setName("USER_READ"));
+        Authority authority = authorityRepository.saveAndFlush(new Authority().setName("CAN_RETRIEVE_PRODUCTS"));
         Role role = roleRepository.saveAndFlush(new Role().setName("ROLE_TESTER").setAuthorities(Set.of(authority)));
         User user = userRepository.saveAndFlush(new User().setEmail("john@doe.com").setRoles(Set.of(role)));
-        List<Product> dummyProducts = productRepository.saveAllAndFlush(Stream.of(new Product(UUID.randomUUID(), "shirt", 49), new Product(UUID.randomUUID(), "sandwich", 8)).collect(Collectors.toList()));
+        Category category1 = new Category(UUID.randomUUID(), "New Category 1");
+        Category category2 = new Category(UUID.randomUUID(), "New Category 2");
+        Origin origin1 = new Origin(UUID.randomUUID(), "New Origin 1");
+        Origin origin2 = new Origin(UUID.randomUUID(), "New Origin 2");
+        LocalDate date1 = LocalDate.of(2023, 12, 12);
+        LocalDate date2 = LocalDate.of(2023, 12, 13);
+        List<Product> dummyProducts = productRepository.saveAllAndFlush(Stream.of(new Product(UUID.randomUUID(), "New Variety 1", category1, origin1, BigDecimal.valueOf(10.00), BigDecimal.valueOf(12.00), date1,  49),
+                new Product(UUID.randomUUID(), "New Variety 2", category2, origin2, BigDecimal.valueOf(11.00), BigDecimal.valueOf(13.00), date2,  8)).collect(Collectors.toList()));
 
         mvc.perform(MockMvcRequestBuilders
                         .get("/products")
@@ -88,7 +123,7 @@ public class ProductIntegrationTests {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].id").value(Matchers.containsInAnyOrder(dummyProducts.get(0).getId().toString(), dummyProducts.get(1).getId().toString())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[*].name").value(Matchers.containsInAnyOrder(dummyProducts.get(0).getName(), dummyProducts.get(1).getName())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[*].name").value(Matchers.containsInAnyOrder(dummyProducts.get(0).getCategory(), dummyProducts.get(1).getCategory())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[*].price").doesNotExist());
     }
 }

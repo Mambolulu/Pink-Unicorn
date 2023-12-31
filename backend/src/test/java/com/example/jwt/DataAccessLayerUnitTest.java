@@ -32,25 +32,25 @@ public class DataAccessLayerUnitTest {
 
     @BeforeEach
     public void setUp() {
-        UUID productId1 = UUID.randomUUID();
+        /*UUID productId1 = UUID.randomUUID();
         UUID productId2 = UUID.randomUUID();
         UUID categoryId1 = UUID.randomUUID();
         UUID categoryId2 = UUID.randomUUID();
         UUID originId1 = UUID.randomUUID();
-        UUID originId2 = UUID.randomUUID();
+        UUID originId2 = UUID.randomUUID();*/
         String variety1 = "Test Variety 1";
         String variety2 = "Test Variety 2";
         Category category1 = new Category();
-        category1.setId(categoryId1);
+
         category1.setName("Test Category 1");
         Category category2 = new Category();
-        category2.setId(categoryId2);
-        category2.setName("Test Category 1");
+
+        category2.setName("Test Category 2");
         Origin origin1 = new Origin();
-        origin1.setId(originId1);
+
         origin1.setCountry("Test Country 1");
         Origin origin2 = new Origin();
-        origin2.setId(originId2);
+
         origin2.setCountry("Test Country 2");
         BigDecimal purchasePrice = new BigDecimal("10.00");
         BigDecimal sellingPrice = new BigDecimal("15.00");
@@ -58,11 +58,12 @@ public class DataAccessLayerUnitTest {
         int stock = 100;
 //UUID id, String variety, Category category, Origin origin, BigDecimal purchasePricePer100g, BigDecimal sellingPricePer100g, LocalDate harvestDate, int stock
         dummyProducts = Stream.of(
-                new Product(productId1, variety1, category1, origin1, purchasePrice, sellingPrice, harvestDate, stock),
-                new Product(productId2, variety2, category2, origin2, purchasePrice, sellingPrice, harvestDate, stock)
+                new Product(variety1, category1, origin1, purchasePrice, sellingPrice, harvestDate, stock),
+                new Product(variety2, category2, origin2, purchasePrice, sellingPrice, harvestDate, stock)
         ).collect(Collectors.toList());
 
-        productRepository.saveAll(dummyProducts);
+        List<Product> blabliblu = productRepository.saveAllAndFlush(dummyProducts);
+        List<Product> blabliblu2 = productRepository.findAll();
     }
 
     @Test
