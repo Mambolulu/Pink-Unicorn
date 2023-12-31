@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import {Protected} from "./routes/Protected";
 import Products from "./components/Products";
 import Login from "./components/Login";
+import Register from "./components/Register";
 
 function App() {
     return (
@@ -16,6 +17,7 @@ function App() {
                         <Route path="/" element={<Products/>}/>
                     </Route>
                     <Route path="/login" element={<Login/>}/>
+                    <Route path="/register" element={<Register/>}/>
                 </Routes>
             </AuthenticationContext>
         </Router>

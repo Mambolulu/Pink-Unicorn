@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
+import './Register.css';
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -8,7 +9,7 @@ const Register = () => {
         lastName: '',
         birthDate: '',
         address: '',
-        zipCodeId: '', // Verwenden Sie zipCodeId, um die ID des Postleitzahlenobjekts zu speichern
+        zipCodeId: '',
         email: '',
         password: '',
     });
@@ -35,14 +36,14 @@ const Register = () => {
             });
     };
 
-    if (isRegistered) {
-        return <Navigate to="/login" />;
-    }
+    // if (isRegistered) {
+    //     return <Navigate to="/login" />;
+    // }
 
     return (
-        <div>
+        <div className="register-container">
             <h1>Register</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="register-form">
                 <input
                     type="text"
                     name="firstName"
