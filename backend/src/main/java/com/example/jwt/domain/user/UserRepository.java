@@ -3,12 +3,9 @@ package com.example.jwt.domain.user;
 import com.example.jwt.core.generic.ExtendedRepository;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import com.example.jwt.domain.origin.Origin;
-import com.example.jwt.domain.purchase.Purchase;
 import com.example.jwt.domain.role.Role;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -36,12 +33,6 @@ public interface UserRepository extends ExtendedRepository<User> {
           "ORDER BY COUNT(p.quantity) " +
           "DESC LIMIT 1",nativeQuery = true)
   Origin findTopCountriesByProductOrdersLastXDays(int days);
-
-  @Query(value = "SELECT p.product, SUM(p.quantity) AS 'Anzahl Bestellter Produkte', SUM(p.collectedSeeds) AS 'Gesammelte Seeds' " +
-          "FROM Purchase p " +
-          "WHERE p.user.id = :userId " +
-          "GROUP BY p.product", nativeQuery = true)
-  List<Purchase> retrieveUsersPurchaseHistory(UUID userId);
 
   @Query("SELECT r FROM Role r WHERE r.name = :roleName")
   Optional<Role> findRoleByName(@Param("roleName") String roleName);

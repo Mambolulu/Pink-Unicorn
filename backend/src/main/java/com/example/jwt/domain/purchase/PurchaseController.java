@@ -2,7 +2,8 @@ package com.example.jwt.domain.purchase;
 
 import com.example.jwt.domain.purchase.dto.PurchaseDTO;
 import com.example.jwt.domain.purchase.dto.PurchaseMapper;
-import com.example.jwt.domain.user.UserService;
+import com.example.jwt.domain.purchase.dto.PurchaseSummaryDTO;
+import com.example.jwt.domain.purchase.dto.PurchaseSummaryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,15 +19,15 @@ import java.util.UUID;
 @RequestMapping("/purchases")
 public class PurchaseController {
 
-    private final UserService userService;
     private final PurchaseService purchaseService;
     private final PurchaseMapper purchaseMapper;
+    private final PurchaseSummaryMapper purchaseSummaryMapper;
 
     @Autowired
-    public PurchaseController(UserService userService, PurchaseService purchaseService, PurchaseMapper purchaseMapper) {
-        this.userService = userService;
+    public PurchaseController(PurchaseService purchaseService, PurchaseMapper purchaseMapper, PurchaseSummaryMapper purchaseSummaryMapper) {
         this.purchaseService = purchaseService;
         this.purchaseMapper = purchaseMapper;
+        this.purchaseSummaryMapper = purchaseSummaryMapper;
     }
 
     @PostMapping("/{productId}/{quantityInGram}")
@@ -39,10 +40,10 @@ public class PurchaseController {
         return new ResponseEntity<>(purchaseMapper.toDTO(purchase), HttpStatus.OK);
     }
 
-    @GetMapping("/retrieve/purchase/history")
+    @GetMapping("/retrieve/history")
     @PreAuthorize("hasAuthority('CAN_RETRIEVE_PURCHASE_HISTORY')")
-    public ResponseEntity<List<PurchaseDTO>> retrievePurchaseHistory() {
-        List<Purchase> purchases = userService.retrievePurchaseHistory();
-        return new ResponseEntity<>(purchaseMapper.toDTOs(purchases), HttpStatus.NO_CONTENT);
+    public ResponseEntity<List<PurchaseSummaryDTO>> retrievePurchaseHistory() {
+        List<PurchaseSummary> purchaseSummaries = purchaseService.retrievePurchaseHistory();
+        return new ResponseEntity<>(purchaseSummaryMapper.toDTOs(purchaseSummaries), HttpStatus.OK);
     }
 }

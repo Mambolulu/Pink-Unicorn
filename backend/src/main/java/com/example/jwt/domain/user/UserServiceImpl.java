@@ -2,23 +2,16 @@ package com.example.jwt.domain.user;
 
 import com.example.jwt.core.generic.ExtendedServiceImpl;
 import com.example.jwt.domain.origin.Origin;
-import com.example.jwt.domain.purchase.Purchase;
 import com.example.jwt.domain.role.Role;
 import com.example.jwt.domain.rank.Rank;
 import com.example.jwt.domain.rank.RankRepository;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
-import java.util.List;
-import java.util.UUID;
-
 import java.util.Comparator;
 
 @Service
@@ -91,13 +84,5 @@ public class UserServiceImpl extends ExtendedServiceImpl<User> implements UserSe
   @Override
   public Origin getTopCountriesByProductOrdersLastXDays(int days) {
     return ((UserRepository) repository).findTopCountriesByProductOrdersLastXDays(days);
-  }
-
-  @Override
-  public List<Purchase> retrievePurchaseHistory(){
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    UUID userId = ((User) authentication.getPrincipal()).getId();
-
-    return ((UserRepository) repository).retrieveUsersPurchaseHistory(userId);
   }
 }
