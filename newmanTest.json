@@ -45,7 +45,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\"username\": \"your_username\", \"password\": \"your_password\"}",
+          "raw": "{\"firstName\": \"sdgf\", \"lastName\": \"asdf\", \"birthDate\": \"1983-11-11\", \"zipCode\":{\"id\": \"c5e567ba-401d-46bf-881d-a22851bd6e23\"}, \"email\": \"e@e.ch\", \"password\": \"password\"}",
 "options": {
               "raw": {
                 "language": "json"
@@ -53,14 +53,14 @@
             }
         },
         "url": {
-          "raw": "http://localhost:8080/register",
+          "raw": "http://localhost:8080/users/register",
           "protocol": "http",
           "host": [
             "localhost"
           ],
           "port": "8080",
           "path": [
-
+	    "users",
             "register"
           ]
         }
@@ -91,7 +91,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\"username\": \"your_username\", \"password\": \"your_password\"}"
+          "raw": "{\"email\": \"e@e.ch\", \"password\": \"password\"}"
         },
         "url": {
           "raw": "http://localhost:8080/users/login",
@@ -112,7 +112,8 @@
               "exec": [
                 "pm.test(\"Login successful\", function () {",
                 "    pm.response.to.have.status(200);",
-                "    pm.environment.set(\"token\", pm.response.json().token);",
+		"     const responseBody = pm.response.json();",
+                "    pm.environment.set(\"token\", responseBody.token;",
                 "});"
               ],
               "type": "text/javascript"
