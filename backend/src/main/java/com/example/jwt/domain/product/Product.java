@@ -46,16 +46,6 @@ public class Product extends ExtendedEntity {
     this.stockInGram = stockInGram;
   }
 
-  public Product(String variety, Category category, Origin origin, BigDecimal purchasePricePer100g, BigDecimal sellingPricePer100g, LocalDate harvestDate, int stock) {
-    this.variety = variety;
-    this.category = category;
-    this.origin = origin;
-    this.purchasePricePer100g = purchasePricePer100g;
-    this.sellingPricePer100g = sellingPricePer100g;
-    this.harvestDate = harvestDate;
-    this.stock = stock;
-  }
-
   public String getVariety() {
     return variety;
   }

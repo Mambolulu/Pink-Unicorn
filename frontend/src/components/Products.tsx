@@ -1,47 +1,61 @@
 import React, { useEffect, useState } from 'react';
 import AxiosUtility from '../utility/AxiosUtility';
 import {AxiosInstance} from 'axios';
+import './Products.css'
 
-// Define an interface for your tea offering
+interface Category {
+    id: string;
+    name: string;
+}
+
+interface Origin {
+    id: string;
+    country: string;
+}
+
 interface TeaOffering {
     id: string;
     variety: string;
+    category: Category;
+    origin: Origin;
+    purchasePricePer100g: number;
+    sellingPricePer100g: number;
+    harvestDate: string;
+    stockInGram: number;
 }
 
 const Products = () => {
-    const [teaOfferings, setTeaOfferings] = useState<TeaOffering[]>([]); // Provide the type here
+    const [teaOfferings, setTeaOfferings] = useState<TeaOffering[]>([]);
     const api: AxiosInstance = AxiosUtility.getApi();
 
     useEffect(() => {
-        // Define an async function to fetch tea offerings
         const fetchTeaOfferings = async () => {
             try {
                 const response = await api.get('/products');
-                console.log(response);
-                setTeaOfferings(response.data); // Assuming the response is an array of tea offerings
+                setTeaOfferings(response.data);
             } catch (error) {
                 console.error('Error fetching tea offerings:', error);
             }
         };
 
-        // Call the async function to fetch tea offerings when the component mounts
         fetchTeaOfferings();
     }, []);
 
     return (
-        <div>
-            <h1>Tea Offerings</h1>
+        <div className="container products-container">
+            <h1 className="text-center my-4">Tea Offerings</h1>
             <div className="row">
                 {teaOfferings.map((tea) => (
-                    <div className="col-md-4" key={tea.id}>
-                        {/* Use Bootstrap Card component to display tea offering */}
-                        <div className="card">
-                            {/*<img src={tea.image} className="card-img-top" alt={tea.variety} />*/}
+                    <div className="col-md-4 mb-4" key={tea.id}>
+                        <div className="card tea-card">
+                            {/* Ein Bild hier, falls verfügbar */}
                             <div className="card-body">
                                 <h5 className="card-title">{tea.variety}</h5>
-                                {/*<p className="card-text">Date: {tea.date}</p>*/}
-                                {/*<p className="card-text">Price Range: ${tea.minPrice} - ${tea.maxPrice}</p>*/}
-                                {/*<p className="card-text">Quantity: {tea.quantity}</p>*/}
+                                <p className="card-text">Category: {tea.category.name}</p>
+                                <p className="card-text">Origin: {tea.origin.country}</p>
+                                <p className="card-text">Price: ${tea.sellingPricePer100g} per 100g</p>
+                                <p className="card-text">Harvest: {tea.harvestDate}</p>
+                                <p className="card-text">Stock: {tea.stockInGram}g</p>
                             </div>
                         </div>
                     </div>
