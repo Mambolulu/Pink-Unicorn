@@ -1,0 +1,42 @@
+plugins {
+    id 'org.springframework.boot' version '2.7.2'
+    id 'io.spring.dependency-management' version '1.0.12.RELEASE'
+    id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.7.17'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.7.17'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.7.17'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.7.17'
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.6.0'
+    implementation group: 'commons-validator', name: 'commons-validator', version: '1.7'
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.12.3'
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.12.3'
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.12.3'
+    implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.5.5.Final'
+
+    annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.5.5.Final'
+    annotationProcessor group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: '2.7.17'
+
+    testAnnotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: '1.5.2.Final'
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.7.17'
+    testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.8.8'
+    testImplementation group: 'com.h2database', name: 'h2', version: '2.1.214'
+
+    implementation group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: '1.12.0'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.7.18'
+
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

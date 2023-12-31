@@ -1,0 +1,58 @@
+version: '3.8'
+services:
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: postgres # Der Datenbankname sollte nicht die URL enthalten
+      POSTGRES_URL: jdbc:postgresql://mambolulu.internet-box.ch:5432/postgres
+      POSTGRES_USER: unicorn # Ihr definiertes Benutzerkonto
+      POSTGRES_PASSWORD: pink # Das zugehörige Passwort
+
+  # Spring Boot Application
+  spring-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+  # React Frontend
+  react-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - spring-backend
+    environment:
+      REACT_APP_BACKEND_URL: http://localhost:8080
+
+  # Prometheus
+  prometheus:
+    image: prom/prometheus:v2.44.0
+    container_name: prometheus
+    depends_on:
+      - spring-backend
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./backend/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  # Grafana
+  grafana:
+    image: grafana/grafana:9.5.2
+    container_name: grafana
+    depends_on:
+      - prometheus
+    ports:
+      - "4000:3000"
+    restart: unless-stopped
+    volumes:
+      - ./backend/monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
