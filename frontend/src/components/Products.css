@@ -1,0 +1,28 @@
+.products-container {
+    padding: 20px;
+}
+
+.tea-card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 10px;
+}
+
+.tea-card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.card-title {
+    color: #333;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.card-text {
+    color: #555;
+    font-size: 0.9em;
+}

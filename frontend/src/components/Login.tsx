@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/authenticationcontext/AuthenticationContext
 import {useNavigate} from 'react-router-dom';
 import AxiosUtility from '../utility/AxiosUtility';
 import {AxiosInstance} from 'axios';
+import './Login.css';
 
 const Login = () => {
     const [email, setEmail] = useState<string>('');
@@ -45,9 +46,9 @@ const Login = () => {
     // }
 
     return (
-        <div>
+        <div className="login-container">
             <h1>Login</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="login-form">
                 <div>
                     <label htmlFor="email">E-Mail:</label>
                     <input
